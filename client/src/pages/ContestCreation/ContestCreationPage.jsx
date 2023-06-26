@@ -9,13 +9,13 @@ import ProgressBar from '../../components/ProgressBar/ProgressBar';
 import Footer from '../../components/Footer/Footer';
 import Header from '../../components/Header/Header';
 
-const ContestCreationPage = (props) => {
+const ContestCreationPage = props => {
   const formRef = useRef();
   const contestData = props.contestCreationStore.contests[props.contestType]
     ? props.contestCreationStore.contests[props.contestType]
     : { contestType: props.contestType };
 
-  const handleSubmit = (values) => {
+  const handleSubmit = values => {
     props.saveContest({ type: props.contestType, info: values });
     const route =
       props.bundleStore.bundle[props.contestType] === 'payment'
@@ -68,13 +68,13 @@ const ContestCreationPage = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   const { contestCreationStore, bundleStore } = state;
   return { contestCreationStore, bundleStore };
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  saveContest: (data) => dispatch(saveContestToStore(data)),
+const mapDispatchToProps = dispatch => ({
+  saveContest: data => dispatch(saveContestToStore(data)),
 });
 
 export default connect(

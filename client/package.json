@@ -53,6 +53,7 @@
   "devDependencies": {
     "eslint": "^7.26.0",
     "eslint-config-airbnb": "^18.2.1",
+    "prettier-standard": "^16.4.1",
     "sass": "^1.54.9"
   }
 }
