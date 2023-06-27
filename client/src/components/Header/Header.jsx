@@ -5,8 +5,10 @@ import styles from './Header.module.sass';
 import CONSTANTS from '../../constants';
 import { clearUserStore } from '../../store/slices/userSlice';
 import { getUser } from '../../store/slices/userSlice';
+import Logo from '../Logo';
 
 const { TEL_NUMBER } = CONSTANTS.COMPANY_CONTACTS;
+
 class Header extends React.Component {
   componentDidMount () {
     if (!this.props.data) {
@@ -122,11 +124,7 @@ class Header extends React.Component {
           </div>
         </div>
         <div className={styles.navContainer}>
-          <img
-            src={`${CONSTANTS.STATIC_IMAGES_PATH}blue-logo.png`}
-            className={styles.logo}
-            alt='blue_logo'
-          />
+          <Logo alt='blue_logo' className={styles.logo} />
           <div className={styles.leftNav}>
             <div className={styles.nav}>
               <ul>
