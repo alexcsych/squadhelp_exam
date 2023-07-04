@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Formik } from 'formik';
+import { ErrorMessage, Form, Formik } from 'formik';
 import { connect } from 'react-redux';
 import { clearUserError } from '../../store/slices/userSlice';
 import styles from './UpdateUserInfoForm.module.sass';
@@ -8,7 +8,7 @@ import Schems from '../../utils/validators/validationSchems';
 import Error from '../Error/Error';
 
 const UpdateUserInfoForm = props => {
-  const [imageName, setImageName] = useState('anon.png');
+  const [imageName, setImageName] = useState('');
   const { onSubmit, submitting, error, clearUserError } = props;
   return (
     <Formik
@@ -74,13 +74,20 @@ const UpdateUserInfoForm = props => {
                 id='fileInput'
                 name='file'
                 type='file'
-                accept='.jpg, .png, .jpeg'
+                accept='.gif, .png, .jpg, .jpeg'
                 onChange={e => {
-                  setImageName(e.target.files[0].name);
+                  e.target.files.length > 0
+                    ? setImageName(e.target.files[0].name)
+                    : setImageName('');
                   formikProps.setFieldValue('file', e.target.files[0]);
                 }}
               />
               <label htmlFor='fileInput'>Chose file</label>
+              <ErrorMessage
+                name='file'
+                component='span'
+                className={styles.error}
+              />
             </div>
             <div className={styles.imgName}>{imageName}</div>
           </div>
