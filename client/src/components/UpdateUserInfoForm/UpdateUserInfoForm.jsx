@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { ErrorMessage, Form, Formik } from 'formik';
+import { Form, Formik } from 'formik';
 import { connect } from 'react-redux';
 import { clearUserError } from '../../store/slices/userSlice';
 import styles from './UpdateUserInfoForm.module.sass';
+import ImageUpload from '../InputComponents/ImageUpload/ImageUpload';
 import FormInput from '../FormInput/FormInput';
 import Schems from '../../utils/validators/validationSchems';
 import Error from '../Error/Error';
@@ -67,30 +68,15 @@ const UpdateUserInfoForm = props => {
               }}
             />
           </div>
-          <div className={styles.imageUploadContainer}>
-            <div className={styles.uploadInputContainer}>
-              <span>Support only images (*.png, *.gif, *.jpeg)</span>
-              <input
-                id='fileInput'
-                name='file'
-                type='file'
-                accept='.gif, .png, .jpg, .jpeg'
-                onChange={e => {
-                  e.target.files.length > 0
-                    ? setImageName(e.target.files[0].name)
-                    : setImageName('');
-                  formikProps.setFieldValue('file', e.target.files[0]);
-                }}
-              />
-              <label htmlFor='fileInput'>Chose file</label>
-              <ErrorMessage
-                name='file'
-                component='span'
-                className={styles.error}
-              />
-            </div>
-            <div className={styles.imgName}>{imageName}</div>
-          </div>
+          <ImageUpload
+            setValue={formikProps.setFieldValue}
+            classes={{
+              uploadContainer: styles.imageUploadContainer,
+              inputContainer: styles.uploadInputContainer,
+              imgName: styles.imgName,
+              error: styles.error,
+            }}
+          />
           <button type='submit' disabled={submitting}>
             Submit
           </button>
