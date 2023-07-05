@@ -13,11 +13,12 @@ import Schems from '../../utils/validators/validationSchems';
 import Error from '../Error/Error';
 
 const OfferForm = props => {
-  const renderOfferInput = () => {
+  const renderOfferInput = setValue => {
     if (props.contestType === CONTANTS.LOGO_CONTEST) {
       return (
         <ImageUpload
           name='offerData'
+          setValue={setValue}
           classes={{
             uploadContainer: styles.imageUploadContainer,
             inputContainer: styles.uploadInputContainer,
@@ -74,14 +75,14 @@ const OfferForm = props => {
         }}
         validationSchema={validationSchema}
       >
-        <Form className={styles.form}>
-          {renderOfferInput()}
-          {valid && (
+        {formikProps => (
+          <Form className={styles.form}>
+            {renderOfferInput(formikProps.setFieldValue)}
             <button type='submit' className={styles.btnOffer}>
               Send Offer
             </button>
-          )}
-        </Form>
+          </Form>
+        )}
       </Formik>
     </div>
   );

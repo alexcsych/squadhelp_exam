@@ -104,7 +104,17 @@ export default {
     industry: yup.string(),
   }),
   LogoOfferSchema: yup.object().shape({
-    offerData: yup.mixed().required('required'),
+    offerData: yup
+      .mixed()
+      .test('test-file', 'Support only images *.png, *.gif, *.jpeg', value => {
+        if (!value) return false;
+        return (
+          value.type === 'image/png' ||
+          value.type === 'image/jpeg' ||
+          value.type === 'image/gif'
+        );
+      })
+      .required('required'),
   }),
   TextOfferSchema: yup.object().shape({
     offerData: yup
