@@ -26,13 +26,40 @@ h2,
 h3,
 h4,
 h5,
-h6 {
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
   margin-bottom: 0.5rem;
+  font-weight: 300;
   line-height: 1.5;
 }
 
-h1 {
+h4,
+h5,
+h6,
+.h4,
+.h5,
+.h6 {
+  font-weight: 500;
+}
+
+h1,
+.h1 {
   font-size: 2.5rem;
+}
+
+h2,
+.h2 {
+  font-size: 2rem;
+}
+
+h4,
+.h4 {
+  font-size: 1.5rem;
 }
 
 p {
@@ -335,6 +362,43 @@ div .navbar-nav-iconbtn {
   height: auto;
 }
 
+.section-b {
+  padding-bottom: 2rem;
+  padding-top: 2rem;
+}
+
+.section-b-pa {
+  text-align: center;
+}
+
+.section-b-pb {
+  display: block;
+}
+
+.section-b-pb-content {
+  text-align: center;
+  margin: 0 0.9375rem 1.5rem;
+  padding: 4rem 1rem;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid #e7eaf3;
+  border-radius: 0.3125rem;
+}
+
+.section-b-card {
+  margin-bottom: 1.5rem;
+}
+
+.section-b-card > img {
+  max-width: 4.5rem;
+  width: 100%;
+}
+
+.section-b-pb-content .play-btn {
+  border-radius: 0.3125rem;
+}
+
 @media (min-width: 1280px) {
   .navbar .media-flex {
     margin-left: 10rem;
@@ -375,11 +439,21 @@ div .navbar-nav-iconbtn {
   .container {
     max-width: 540px;
   }
+  .section-b-pb-content {
+    margin: 0 0.9375rem;
+  }
 }
 
 @media (min-width: 768px) {
   .container {
     max-width: 720px;
+  }
+  .section-b-pa {
+    width: 80%;
+    margin: 0 auto 4rem;
+  }
+  .section-b-pb {
+    display: flex;
   }
 }
 
