@@ -98,6 +98,11 @@ a {
   background-color: transparent;
 }
 
+strong {
+  font-weight: 600;
+  color: #1e2022;
+}
+
 .navbar {
   border-bottom: 1px solid rgba(243, 244, 246);
   font-family: 'Raleway', sans-serif;
@@ -669,6 +674,57 @@ div .navbar-nav-iconbtn {
   padding-left: 40px;
 }
 
+.section-e {
+  text-align: center;
+  background-image: linear-gradient(150deg, #2d1582 0%, #19a0ff 100%);
+}
+
+.section-e-content {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.section-e-h3 {
+  margin-bottom: 0.5rem;
+  color: #00dffc;
+}
+
+.section-e-p {
+  color: #fff;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  font-weight: 300;
+}
+
+.section-e-btn {
+  background-color: #fff;
+  border-color: #fff;
+}
+
+.section-f {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.section-f-content {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+  text-align: center;
+}
+
+.section-f-items {
+  margin-bottom: 3rem;
+  width: 100%;
+  padding-right: 1rem;
+  padding-left: 1rem;
+}
+
+.section-f-items:last-child {
+  margin-bottom: 0;
+}
+
 @media (min-width: 1280px) {
   .navbar .media-flex {
     margin-left: 10rem;
@@ -730,6 +786,9 @@ div .navbar-nav-iconbtn {
     padding-top: 8rem;
     padding-bottom: 8rem;
   }
+  .section-f-items {
+    max-width: 33%;
+  }
 }
 
 @media (min-width: 992px) {
@@ -770,6 +829,14 @@ div .navbar-nav-iconbtn {
   .section-d-pa {
     margin-bottom: 0;
     max-width: 25%;
+  }
+  .section-f {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+  .section-f-items {
+    padding-right: 3rem;
+    padding-left: 3rem;
   }
 }
 
