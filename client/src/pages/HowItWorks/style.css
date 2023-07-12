@@ -849,6 +849,199 @@ div .navbar-nav-iconbtn {
   margin: 0 auto;
 }
 
+footer {
+  background-color: #ebebeb;
+  font-family: 'Raleway', sans-serif;
+  color: #4a4a4a;
+  line-height: 1.5;
+}
+
+.footer-content {
+  max-width: 1188px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.footer-nav {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 5rem 0 3.75rem 0;
+}
+
+.footer-nav > div {
+  width: 25%;
+}
+
+.footer-nav > div:last-child {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.footer-section-title {
+  padding-bottom: 1.25rem;
+  font-size: 1.2rem;
+  line-height: 2rem;
+  color: #333333;
+  margin: 0;
+  font-weight: 700;
+}
+
+.footer-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.footer-list-item {
+  padding-bottom: 0.75rem;
+  padding-right: 0.25rem;
+}
+
+.footer-nav-link {
+  font-size: 0.95rem;
+  line-height: 1.5rem;
+  font-weight: 400;
+  color: #4a4a4a;
+  text-decoration: none;
+}
+
+.text-dec {
+  color: #77838f;
+}
+
+.footer-list-item > .text-dec {
+  padding-left: 1.5rem;
+}
+
+.footer-search-container {
+  border-top: 1px solid #f8f8f8;
+  border-bottom: 1px solid #f8f8f8;
+  padding: 3.75rem 0;
+}
+
+.footer-search-title {
+  padding: 0;
+  margin-bottom: 1.25rem;
+}
+
+.footer-search-content {
+  display: flex;
+  gap: 2rem;
+}
+
+.footer-search {
+  display: flex;
+  align-items: center;
+  margin-top: 3.5rem;
+  border: 1px solid #e7eaf3;
+  border-radius: 4px;
+}
+
+.footer-search-input {
+  flex: 1 1 0%;
+  width: 100%;
+  padding: 1.25rem 1rem;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  border: none;
+  background-color: white;
+  border-radius: 4px;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  font-family: inherit;
+}
+
+.footer-search-btn {
+  display: flex;
+  align-items: center;
+  width: auto;
+  padding: 1.25rem 2rem;
+  color: white;
+  border: none;
+  cursor: pointer;
+  background-color: #4980ff;
+  border-radius: 4px;
+}
+
+.footer-search-btn > i {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 21px;
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+.footer-search-item-b {
+  display: flex;
+  align-self: flex-start;
+  flex-wrap: wrap;
+}
+
+.footer-search-term {
+  margin: 0 14px 14px 0;
+  padding: 0.75rem 1rem;
+  border: 1px solid #ebebeb;
+  border-radius: 8px;
+  background-color: #fbfcfe;
+}
+
+.footer-search-a {
+  display: flex;
+  align-items: center;
+  color: #4a4a4a;
+}
+
+.footer-search-span {
+  margin-left: 14px;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+}
+
+.footer-nav-link:hover,
+.footer-company-info-text:hover,
+.footer-search-span:hover {
+  color: #0052ea;
+}
+
+.footer-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2.5rem;
+}
+
+.footer-company-info,
+.footer-copyright {
+  padding-bottom: 1.25rem;
+  text-align: center;
+}
+
+.footer-copyright-text {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+  color: #4a4a4a;
+}
+
+.footer-company-info-text {
+  max-width: 24rem;
+  font-weight: 600;
+  color: #4a4a4a;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  overflow-wrap: break-word;
+}
+
+.footer-social-contacts {
+  display: flex;
+  column-gap: 1.5rem;
+}
+
 @media (min-width: 1280px) {
   .navbar .media-flex {
     margin-left: 10rem;
@@ -872,6 +1065,16 @@ div .navbar-nav-iconbtn {
   }
 }
 
+@media (min-width: 1024px) {
+  .footer-info {
+    flex-direction: row;
+  }
+  .footer-company-info,
+  .footer-copyright {
+    padding-bottom: 0px;
+  }
+}
+
 @media (min-width: 1000px) {
   .navbar .navbar-menu-title,
   .navbar .start-contest-btn {
@@ -882,6 +1085,14 @@ div .navbar-nav-iconbtn {
 @media (min-width: 640px) {
   .media-flex {
     display: flex;
+  }
+  .footer-nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .footer-search-item {
+    max-width: 50%;
+    width: 100%;
   }
 }
 
@@ -922,6 +1133,15 @@ div .navbar-nav-iconbtn {
   .section-h-pb {
     max-width: 58.33333%;
     margin-bottom: 0;
+  }
+  .footer-search-input {
+    width: auto;
+  }
+}
+
+@media (max-width: 991px) {
+  .footer-nav > div {
+    width: 50%;
   }
 }
 
