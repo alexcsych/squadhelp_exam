@@ -1,5 +1,13 @@
 'use strict';
 
+let navbarNavIconMenu = document.querySelector('.navbar-nav-icon-menu');
+let navbarBot = document.querySelector('.navbar-bot');
+
+navbarNavIconMenu.addEventListener('click', function () {
+  navbarBot.style.display === 'block'
+    ? (navbarBot.style.display = 'none')
+    : (navbarBot.style.display = 'block');
+});
 let navbarItems = document.getElementsByClassName('navbar-nav-item');
 
 Array.from(navbarItems).forEach(function (navbarItem) {
