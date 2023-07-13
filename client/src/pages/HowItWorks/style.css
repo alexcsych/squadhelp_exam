@@ -1079,6 +1079,16 @@ footer {
   column-gap: 1.5rem;
 }
 
+.fixed-bottom {
+  display: none;
+}
+
+.fixed-bottom-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 @media (min-width: 1280px) {
   .navbar .media-flex {
     margin-left: 10rem;
@@ -1296,5 +1306,36 @@ footer {
     position: inherit;
     border: none;
     box-shadow: none;
+  }
+  .fixed-bottom {
+    width: 100%;
+    z-index: 1000;
+    margin-top: 20px;
+    bottom: 0;
+    position: fixed;
+    padding: 15px 20px;
+    background-color: #fff;
+    border: none;
+    box-shadow: -1px 4px 12px rgb(0 0 0 / 25%);
+  }
+
+  .sign-in {
+    background-color: #efefef;
+    color: #333;
+  }
+  .sign-up {
+    background-color: #377dff;
+    color: #fff;
+    margin-left: 2px;
+  }
+
+  .sign-in,
+  .sign-up {
+    text-align: center;
+    padding: 8px 20px;
+    font-size: 16px;
+    border-radius: 2px;
+    width: 49%;
+    display: inline-block;
   }
 }

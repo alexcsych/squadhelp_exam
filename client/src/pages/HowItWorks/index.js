@@ -2,11 +2,16 @@
 
 let navbarNavIconMenu = document.querySelector('.navbar-nav-icon-menu');
 let navbarBot = document.querySelector('.navbar-bot');
+let navbarFixedBottom = document.querySelector('.fixed-bottom ');
 
 navbarNavIconMenu.addEventListener('click', function () {
-  navbarBot.style.display === 'block'
-    ? (navbarBot.style.display = 'none')
-    : (navbarBot.style.display = 'block');
+  if (navbarBot.style.display === 'block') {
+    navbarBot.style.display = 'none';
+    navbarFixedBottom.style.display = 'none';
+  } else {
+    navbarBot.style.display = 'block';
+    navbarFixedBottom.style.display = 'block';
+  }
 });
 let navbarItems = document.getElementsByClassName('navbar-nav-item');
 
