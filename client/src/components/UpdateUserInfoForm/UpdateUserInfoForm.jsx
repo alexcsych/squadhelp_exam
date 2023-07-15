@@ -9,7 +9,6 @@ import Schems from '../../utils/validators/validationSchems';
 import Error from '../Error/Error';
 
 const UpdateUserInfoForm = props => {
-  const [imageName, setImageName] = useState('');
   const { onSubmit, submitting, error, clearUserError } = props;
   return (
     <Formik
@@ -69,6 +68,7 @@ const UpdateUserInfoForm = props => {
             />
           </div>
           <ImageUpload
+            name='file'
             setValue={formikProps.setFieldValue}
             classes={{
               uploadContainer: styles.imageUploadContainer,
