@@ -15,8 +15,9 @@ const ButtonGroup = () => {
         className={classNames(styles.item, {
           [styles.selected]: selectedButton === 1,
         })}
+        onClick={() => handleClick(1)}
       >
-        <button className={styles.btn} onClick={() => handleClick(1)}>
+        <button className={styles.btn}>
           {selectedButton === 1 ? 'Yes' : 'No'}
         </button>
         <span className={styles.text}>
@@ -27,8 +28,9 @@ const ButtonGroup = () => {
         className={classNames(styles.item, {
           [styles.selected]: selectedButton === 2,
         })}
+        onClick={() => handleClick(2)}
       >
-        <button className={styles.btn} onClick={() => handleClick(2)}>
+        <button className={styles.btn}>
           {selectedButton === 2 ? 'Yes' : 'No'}
         </button>
         <span className={styles.text}>
@@ -39,8 +41,9 @@ const ButtonGroup = () => {
         className={classNames(styles.item, {
           [styles.selected]: selectedButton === 3,
         })}
+        onClick={() => handleClick(3)}
       >
-        <button className={styles.btn} onClick={() => handleClick(3)}>
+        <button className={styles.btn}>
           {selectedButton === 3 ? 'Yes' : 'No'}
         </button>
         <span className={styles.text}>
