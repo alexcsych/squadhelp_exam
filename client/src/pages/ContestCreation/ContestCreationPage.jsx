@@ -8,6 +8,7 @@ import BackButton from '../../components/BackButton/BackButton';
 import ProgressBar from '../../components/ProgressBar/ProgressBar';
 import Footer from '../../components/Footer/Footer';
 import Header from '../../components/Header/Header';
+import ButtonGroup from '../../components/ButtonGroup/ButtonGroup';
 
 const ContestCreationPage = props => {
   const formRef = useRef();
@@ -45,6 +46,7 @@ const ContestCreationPage = props => {
         </div>
         <ProgressBar currentStep={2} />
       </div>
+      <ButtonGroup />
       <div className={styles.container}>
         <div className={styles.formContainer}>
           <ContestForm
