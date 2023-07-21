@@ -38,7 +38,7 @@ CREATE TABLE "Messages" (
   conversation INTEGER REFERENCES "Conversations"(id) ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
-INSERT INTO "Conversations"(participants, blackList, favoriteList)
+INSERT INTO "Conversations"(participants, "blackList", "favoriteList")
 VALUES  (ARRAY[2,3], ARRAY[FALSE,FALSE], ARRAY[TRUE,TRUE]),
         (ARRAY[2,5], ARRAY[FALSE,FALSE], ARRAY[TRUE,FALSE]),
         (ARRAY[4,5], ARRAY[FALSE,FALSE], ARRAY[FALSE,FALSE]);
