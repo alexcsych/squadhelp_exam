@@ -40,5 +40,5 @@ module.exports = (sequelize, DataTypes) => {
     Conversation.hasMany(models.Messages, { foreignKey: 'conversation' });
   };
 
-  return Message;
+  return Conversation;
 };
