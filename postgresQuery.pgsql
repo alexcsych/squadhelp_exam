@@ -27,8 +27,8 @@ WHERE id IN (
 CREATE TABLE "Conversations" (
   id SERIAL PRIMARY KEY,
   participants INTEGER[] NOT NULL,
-  blackList BOOLEAN[],
-  favoriteList BOOLEAN[]
+  "blackList" BOOLEAN[],
+  "favoriteList" BOOLEAN[]
 );
 
 CREATE TABLE "Messages" (
@@ -36,6 +36,18 @@ CREATE TABLE "Messages" (
   sender INTEGER REFERENCES "Users"(id) ON UPDATE CASCADE ON DELETE RESTRICT,
   body TEXT NOT NULL,
   conversation INTEGER REFERENCES "Conversations"(id) ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
+CREATE TABLE "Catalogs" (
+  id SERIAL PRIMARY KEY,
+  "userId" INTEGER REFERENCES "Users"(id) ON UPDATE CASCADE ON DELETE RESTRICT,
+  "catalogName" VARCHAR(64) NOT NULL
+);
+
+CREATE TABLE "CatalogChats" (
+  "catalogId" INTEGER REFERENCES "Catalogs"(id) ON UPDATE CASCADE ON DELETE RESTRICT,
+  "chatId" INTEGER REFERENCES "Conversations"(id) ON UPDATE CASCADE ON DELETE RESTRICT,
+  PRIMARY KEY ("catalogId", "chatId")
 );
 
 INSERT INTO "Conversations"(participants, "blackList", "favoriteList")
@@ -54,3 +66,16 @@ VALUES (2, 'Ку' , 1),
        (4, 'Дорова' , 3),
        (2, 'Салам' , 1),
        (3,'Вышел я как то на улицу...' , 1);
+
+INSERT INTO "Catalogs"("userId", "catalogName")
+VALUES  (1, 'Каталог1'),
+        (2, 'Каталог2'),
+        (3, 'Каталог3');
+
+INSERT INTO "CatalogChats"("catalogId", "chatId")
+VALUES  (1, 1),
+        (1, 2),
+        (2, 3),
+        (3, 1),
+        (3, 2),
+        (3, 3);
