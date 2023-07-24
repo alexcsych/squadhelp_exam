@@ -38,6 +38,10 @@ module.exports = (sequelize, DataTypes) => {
 
   Conversation.associate = function (models) {
     Conversation.hasMany(models.Messages, { foreignKey: 'conversation' });
+    Conversation.belongsToMany(models.Catalogs, {
+      through: models.CatalogChats,
+      foreignKey: 'chatId',
+    });
   };
 
   return Conversation;
