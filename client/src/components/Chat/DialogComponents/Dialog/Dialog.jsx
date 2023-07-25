@@ -39,7 +39,10 @@ class Dialog extends React.Component {
     const messagesArray = [];
     const { messages, userId } = this.props;
     let currentTime = moment();
-    messages.forEach((message, i) => {
+    const dialogMessages = messages.filter(message =>
+      this.props.chatData.participants.includes(message.sender)
+    );
+    dialogMessages.forEach((message, i) => {
       if (!currentTime.isSame(message.createdAt, 'date')) {
         messagesArray.push(
           <div key={message.createdAt} className={styles.date}>
