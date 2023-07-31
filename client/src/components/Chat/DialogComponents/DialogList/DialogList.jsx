@@ -51,7 +51,12 @@ const DialogList = props => {
       removeChat,
       interlocutor,
     } = props;
-    preview.forEach((chatPreview, index) => {
+    const uniquePreviewMap = preview.reduce((acc, item) => {
+      acc[item._id] = item;
+      return acc;
+    }, {});
+    const uniquePreview = Object.values(uniquePreviewMap);
+    uniquePreview.forEach((chatPreview, index) => {
       const dialogNode = (
         <DialogBox
           interlocutor={chatPreview.interlocutor}

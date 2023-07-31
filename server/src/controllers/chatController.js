@@ -262,6 +262,7 @@ module.exports.addNewChatToCatalog = async (req, res, next) => {
       { $addToSet: { chats: req.body.chatId } },
       { new: true }
     );
+    console.log('req.body.chatId :>> ', req.body.chatId);
     res.send(catalog);
   } catch (err) {
     next(err);

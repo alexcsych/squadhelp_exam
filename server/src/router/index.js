@@ -5,7 +5,7 @@ const userController = require('../controllers/userController');
 const contestController = require('../controllers/contestController');
 const checkToken = require('../middlewares/checkToken');
 const validators = require('../middlewares/validators');
-const chatController = require('../controllers/chatController');
+const chatController = require('../controllers/queries/chatQueries');
 const upload = require('../utils/fileUpload');
 const router = express.Router();
 
