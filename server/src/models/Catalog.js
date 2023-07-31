@@ -33,8 +33,10 @@ module.exports = (sequelize, DataTypes) => {
   Catalog.associate = function (models) {
     Catalog.belongsTo(models.Users, { foreignKey: 'userId' });
     Catalog.belongsToMany(models.Conversations, {
-      through: 'CatalogChats',
+      through: 'CatalogConversations',
       foreignKey: 'catalogId',
+      as: 'chats',
+      onDelete: 'CASCADE',
     });
   };
 

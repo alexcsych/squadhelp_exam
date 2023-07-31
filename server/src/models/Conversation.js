@@ -42,8 +42,9 @@ module.exports = (sequelize, DataTypes) => {
       as: 'conversationData',
     });
     Conversation.belongsToMany(models.Catalogs, {
-      through: models.CatalogChats,
-      foreignKey: 'chatId',
+      through: 'CatalogConversations',
+      foreignKey: 'conversationId',
+      as: 'chats',
     });
   };
 
