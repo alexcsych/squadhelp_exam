@@ -232,4 +232,37 @@ export default {
       )
       .required('required'),
   }),
+  EventSchema: yup.object().shape({
+    name: yup.string().trim().min(2).max(64).required('required'),
+    date: yup
+      .date()
+      .test('is-date-valid', 'Date must be today or later', date => {
+        const today = new Date().setHours(0, 0, 0, 0);
+        const selectedDate = new Date(date).setHours(0, 0, 0, 0);
+        return selectedDate >= today;
+      })
+      .required('required'),
+    time: yup.string().when('date', {
+      is: date => {
+        const today = new Date().setHours(0, 0, 0, 0);
+        const selectedDate = new Date(date).setHours(0, 0, 0, 0);
+        return selectedDate === today;
+      },
+      then: yup
+        .string()
+        .test('is-time-valid', 'Time must be later than now', time => {
+          if (time) {
+            const currentTime = new Date();
+            const [hours, minutes] = time.split(':');
+            const selectedTime = new Date();
+            selectedTime.setHours(Number(hours), Number(minutes), 0, 0);
+            return selectedTime > currentTime;
+          } else {
+            return false;
+          }
+        })
+        .required('required'),
+      otherwise: yup.string().required('required'),
+    }),
+  }),
 };
