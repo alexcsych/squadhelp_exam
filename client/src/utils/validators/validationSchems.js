@@ -264,5 +264,23 @@ export default {
         .required('required'),
       otherwise: yup.string().required('required'),
     }),
+    daysNotify: yup
+      .number('Value must be a number')
+      .min(0, 'Value must be at least 0')
+      .required('required'),
+    hoursNotify: yup
+      .number('Value must be a number')
+      .min(0, 'Value must be at least 0')
+      .required('required'),
+    minutesNotify: yup
+      .number('Value must be a number')
+      .min(0, 'Value must be at least 0')
+      .max(60, 'Value must be at most 60')
+      .required('required'),
+    secondsNotify: yup
+      .number('Value must be a number')
+      .min(0, 'Value must be at least 0')
+      .max(60, 'Value must be at most 60')
+      .required('required'),
   }),
 };

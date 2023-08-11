@@ -15,6 +15,7 @@ const eventSlice = createSlice({
         minutes: 0,
         seconds: 0,
         id: uuidv4(),
+        isNotify: true,
       });
     },
     deleteEvent (state, action) {

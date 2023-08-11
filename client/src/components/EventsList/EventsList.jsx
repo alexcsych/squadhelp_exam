@@ -4,7 +4,8 @@ import {
   deleteEvent,
   updateEventProgress,
 } from '../../store/slices/eventSlice';
-import style from './EventsList.module.sass';
+import styles from './EventsList.module.sass';
+import classNames from 'classnames';
 
 const calculateTime = time => {
   const days = Math.floor(time / (1000 * 60 * 60 * 24));
@@ -14,7 +15,17 @@ const calculateTime = time => {
   return { days, hours, minutes, seconds };
 };
 
-const calculateProgress = (createdAt, eventDate, eventTime) => {
+const calculateProgress = (
+  createdAt,
+  eventDate,
+  eventTime,
+  eventDaysNotify,
+  eventHoursNotify,
+  eventMinutesNotify,
+  eventSecondsNotify,
+  isNotify,
+  name
+) => {
   const currentTime = new Date();
   const eventDateTime = new Date(`${eventDate} ${eventTime}`);
   const maxDifference = eventDateTime - new Date(createdAt);
@@ -23,21 +34,40 @@ const calculateProgress = (createdAt, eventDate, eventTime) => {
   const { days, hours, minutes, seconds } = calculateTime(timeDifference);
   const progress = (1 - timeDifference / maxDifference) * 100;
 
-  if (timeDifference < 0) {
-    return { progress: 100, days, hours, minutes, seconds };
+  if (
+    isNotify &&
+    eventDaysNotify * 86400000 +
+      eventHoursNotify * 3600000 +
+      eventMinutesNotify * 60000 +
+      eventSecondsNotify * 1000 >=
+      timeDifference
+  ) {
+    isNotify = false;
+    alert(`Don\`t forget about '${name}' event`);
   }
-  return { progress, days, hours, minutes, seconds };
+
+  if (timeDifference < 0) {
+    return { progress: 100, days, hours, minutes, seconds, isNotify };
+  }
+  return { progress, days, hours, minutes, seconds, isNotify };
 };
 
 const EventsList = ({ events, remove, updateEventProgress }) => {
   const updateProgress = () => {
     const updatedEvents = events.map(e => {
-      const { progress, days, hours, minutes, seconds } = calculateProgress(
-        e.createdAt,
-        e.date,
-        e.time
-      );
-      return { ...e, progress, days, hours, minutes, seconds };
+      const { progress, days, hours, minutes, seconds, isNotify } =
+        calculateProgress(
+          e.createdAt,
+          e.date,
+          e.time,
+          e.daysNotify,
+          e.hoursNotify,
+          e.minutesNotify,
+          e.secondsNotify,
+          e.isNotify,
+          e.name
+        );
+      return { ...e, progress, days, hours, minutes, seconds, isNotify };
     });
     updateEventProgress(updatedEvents);
   };
@@ -50,26 +80,28 @@ const EventsList = ({ events, remove, updateEventProgress }) => {
     return () => clearInterval(interval);
   }, [events]);
 
-  const eventsSorted = [...events].sort((a, b) => b.progress - a.progress);
+  const eventsSorted = [...events].sort(
+    (a, b) => new Date(`${a.date} ${a.time}`) - new Date(`${b.date} ${b.time}`)
+  );
   const eventsCompleted = [...events].filter(e => e.progress === 100);
 
   return (
-    <div className={style.events}>
+    <div className={styles.events}>
       {eventsSorted.length > 0 ? (
         <>
-          <div className={style.eventsTitle}>
-            <p className={style.eventsListTitle}>Live upcomming checks</p>
+          <div className={styles.eventsTitle}>
+            <p className={styles.eventsListTitle}>Live upcomming checks</p>
             {eventsCompleted.length > 0 ? (
               <p
-                className={style.eventsCompleted}
+                className={styles.eventsCompleted}
               >{`Completed ${eventsCompleted.length}`}</p>
             ) : null}
           </div>
           <ul
             className={
               eventsSorted.length > 6
-                ? `${style.eventUl} ${style.overflowContainer}`
-                : style.eventUl
+                ? classNames(styles.eventUl, styles.overflowContainer)
+                : styles.eventUl
             }
           >
             {eventsSorted.map(e => {
@@ -77,6 +109,10 @@ const EventsList = ({ events, remove, updateEventProgress }) => {
                 width: `${e.progress}%`,
                 backgroundColor: e.progress === 100 ? '#ff3b3b' : '#35e65c',
                 height: '100%',
+              };
+
+              const eventLiStyle = {
+                marginRight: '20px',
               };
 
               let time = '';
@@ -87,16 +123,20 @@ const EventsList = ({ events, remove, updateEventProgress }) => {
               if (time === '') time = 'Completed';
 
               return (
-                <li className={style.eventLi} key={e.id}>
+                <li
+                  className={styles.eventLi}
+                  style={eventsSorted.length > 6 ? eventLiStyle : {}}
+                  key={e.id}
+                >
                   <div
-                    className={style.progressStyle}
+                    className={styles.progressStyle}
                     style={progressStyle}
                   ></div>
-                  <div className={style.content}>{e.name}</div>
-                  <div className={style.contentBox}>
-                    <div className={style.content}>{time}</div>
+                  <div className={styles.content}>{e.name}</div>
+                  <div className={styles.contentBox}>
+                    <div className={styles.content}>{time}</div>
                     <button
-                      className={`${style.content} ${style.closeBtn}`}
+                      className={classNames(styles.content, styles.closeBtn)}
                       onClick={() => remove(e.id)}
                     >
                       X
@@ -108,7 +148,7 @@ const EventsList = ({ events, remove, updateEventProgress }) => {
           </ul>
         </>
       ) : (
-        <p className={style.eventsListTitle}>No upcoming checks</p>
+        <p className={styles.eventsListTitle}>No upcoming checks</p>
       )}
     </div>
   );
