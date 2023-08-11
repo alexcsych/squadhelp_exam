@@ -30,7 +30,6 @@ const eventSlice = createSlice({
 
 const { reducer, actions } = eventSlice;
 
-export const { createEvent, deleteEvent, updateEvent, updateEventProgress } =
-  actions;
+export const { createEvent, deleteEvent, updateEventProgress } = actions;
 
 export default reducer;

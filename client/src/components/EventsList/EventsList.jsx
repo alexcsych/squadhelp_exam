@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import {
   deleteEvent,
@@ -53,6 +53,12 @@ const calculateProgress = (
 };
 
 const EventsList = ({ events, remove, updateEventProgress }) => {
+  const [isFilterActive, setIsFilterActive] = useState(false);
+
+  const handleFilterToggle = () => {
+    setIsFilterActive(!isFilterActive);
+  };
+
   const updateProgress = () => {
     const updatedEvents = events.map(e => {
       const { progress, days, hours, minutes, seconds, isNotify } =
@@ -69,7 +75,10 @@ const EventsList = ({ events, remove, updateEventProgress }) => {
         );
       return { ...e, progress, days, hours, minutes, seconds, isNotify };
     });
-    updateEventProgress(updatedEvents);
+    const filteredEvents = isFilterActive
+      ? updatedEvents.filter(event => event.progress !== 100)
+      : updatedEvents;
+    updateEventProgress(filteredEvents);
   };
 
   useEffect(() => {
@@ -132,7 +141,9 @@ const EventsList = ({ events, remove, updateEventProgress }) => {
                     className={styles.progressStyle}
                     style={progressStyle}
                   ></div>
-                  <div className={styles.content}>{e.name}</div>
+                  <div className={classNames(styles.content, styles.nameText)}>
+                    {e.name}
+                  </div>
                   <div className={styles.contentBox}>
                     <div className={styles.content}>{time}</div>
                     <button
@@ -146,6 +157,17 @@ const EventsList = ({ events, remove, updateEventProgress }) => {
               );
             })}
           </ul>
+          <div className={styles.checkboxContainer}>
+            Delete all completed
+            <label className={styles.switch}>
+              <input
+                type='checkbox'
+                checked={isFilterActive}
+                onChange={handleFilterToggle}
+              />
+              <span className={classNames(styles.slider, styles.round)}></span>
+            </label>
+          </div>
         </>
       ) : (
         <p className={styles.eventsListTitle}>No upcoming checks</p>
