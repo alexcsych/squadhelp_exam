@@ -14,7 +14,7 @@ function Input (props) {
 
         return (
           <label>
-            <span>{label} </span>
+            <span className={classes.title}>{label} </span>
             <input className={inputClassNames} {...restProps} {...field} />
             {meta.error && meta.touched && (
               <span className={classes.error}>{meta.error}</span>
