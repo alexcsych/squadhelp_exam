@@ -33,6 +33,17 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue: 'pending',
       },
+      isModerated: {
+        type: DataTypes.BOOLEAN,
+      },
+      createdAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+      },
+      updatedAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+      },
     },
     {
       timestamps: false,
