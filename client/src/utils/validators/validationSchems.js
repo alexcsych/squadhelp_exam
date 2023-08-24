@@ -53,7 +53,7 @@ export default {
       .required('Display Name is required'),
     role: yup
       .string()
-      .matches(/(customer|creator)/)
+      .matches(/(customer|creator|moderator)/)
       .required('Role is required'),
     agreeOfTerms: yup
       .boolean()
@@ -122,7 +122,7 @@ export default {
       .test(
         'test-offerData',
         'required',
-        value => value && value.trim().length >= 1
+        value => value && value.trim().length >= 1 && value.trim().length <= 64
       )
       .required('suggestion is required'),
   }),
