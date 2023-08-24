@@ -64,8 +64,15 @@
     align-items: center
     justify-content: space-between
     position: relative
-    @media(max-width: 500px)
+    @media(max-width: 680px)
       flex-direction: column
+
+    .status
+      text-align: center
+      margin-left: 10px
+      color: #556da5
+      margin-bottom: 10px
+      font-size: 18px
 
     .userInfo
       min-width: 215px
@@ -90,7 +97,8 @@
         transition: font-size 0.2s
 
     .responseConainer
-      width: 70%
+      max-width: 50%
+      width: 100%
       align-self: center
       display: flex
       flex-direction: column

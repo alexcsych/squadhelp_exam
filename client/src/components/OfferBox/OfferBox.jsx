@@ -196,8 +196,16 @@ const OfferBox = props => {
             />
           )}
         </div>
-        {role !== CONSTANTS.CREATOR && (
+        {role !== CONSTANTS.CREATOR ? (
           <i onClick={goChat} className='fas fa-comments' />
+        ) : (
+          <span className={styles.status}>{`${
+            data.isModerated === null
+              ? 'Not moderated'
+              : data.isModerated === true
+              ? 'Approved'
+              : 'Rejected'
+          }`}</span>
         )}
       </div>
       {props.needButtons(data.status) && (

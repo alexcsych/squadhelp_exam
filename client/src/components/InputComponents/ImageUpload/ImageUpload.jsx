@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ErrorMessage } from 'formik';
 
 const ImageUpload = props => {
-  const { uploadContainer, inputContainer, imgName, error } = props.classes;
+  const { uploadContainer, inputContainer, imgStyle, error } = props.classes;
   const [imageName, setImageName] = useState('');
 
   const handleFileChange = e => {
@@ -26,7 +26,7 @@ const ImageUpload = props => {
         <label htmlFor='fileInput'>Choose file</label>
         <ErrorMessage name={props.name} component='span' className={error} />
       </div>
-      <div className={imgName}>{imageName}</div>
+      <div className={imgStyle}>{imageName}</div>
     </div>
   );
 };
