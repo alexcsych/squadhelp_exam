@@ -222,7 +222,6 @@ module.exports.favoriteChat = async (req, res, next) => {
 };
 
 module.exports.createCatalog = async (req, res, next) => {
-  console.log(req.body);
   const catalog = new Catalog({
     userId: req.tokenData.userId,
     catalogName: req.body.catalogName,
@@ -262,7 +261,6 @@ module.exports.addNewChatToCatalog = async (req, res, next) => {
       { $addToSet: { chats: req.body.chatId } },
       { new: true }
     );
-    console.log('req.body.chatId :>> ', req.body.chatId);
     res.send(catalog);
   } catch (err) {
     next(err);

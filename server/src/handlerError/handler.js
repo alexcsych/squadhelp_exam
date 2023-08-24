@@ -58,7 +58,6 @@ module.exports = async (err, req, res, next) => {
 
   stackTracePromise.then(stackframes => {
     const stackTrace = stackframes.map(sf => sf.toString()).join(' ');
-    console.log(err);
     if (
       err.message ===
         'new row for relation "Banks" violates check constraint "Banks_balance_ck"' ||

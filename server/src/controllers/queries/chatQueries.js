@@ -251,7 +251,6 @@ module.exports.favoriteChat = async (req, res, next) => {
 };
 
 module.exports.createCatalog = async (req, res, next) => {
-  console.log(req.body);
   try {
     const { catalogName, chatId } = req.body;
     const catalog = await bd.Catalogs.create({
