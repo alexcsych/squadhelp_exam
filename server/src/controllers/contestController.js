@@ -12,7 +12,6 @@ module.exports.dataForContest = async (req, res, next) => {
     const {
       body: { characteristic1, characteristic2 },
     } = req;
-    console.log(req.body, characteristic1, characteristic2);
     const types = [characteristic1, characteristic2, 'industry'].filter(
       Boolean
     );
@@ -35,7 +34,6 @@ module.exports.dataForContest = async (req, res, next) => {
     });
     res.send(response);
   } catch (err) {
-    console.log(err);
     next(new ServerError('cannot get contest preferences'));
   }
 };
@@ -59,7 +57,7 @@ module.exports.getContestById = async (req, res, next) => {
           where:
             req.tokenData.role === CONSTANTS.CREATOR
               ? { userId: req.tokenData.userId }
-              : {},
+              : { isModerated: true },
           attributes: { exclude: ['userId', 'contestId'] },
           include: [
             {
@@ -125,6 +123,8 @@ module.exports.setNewOffer = async (req, res, next) => {
   }
   obj.userId = req.tokenData.userId;
   obj.contestId = req.body.contestId;
+  obj.createdAt = new Date();
+  obj.updatedAt = new Date();
   try {
     const result = await contestQueries.createOffer(obj);
     delete result.contestId;
@@ -136,6 +136,54 @@ module.exports.setNewOffer = async (req, res, next) => {
     res.send(Object.assign({}, result, { User }));
   } catch (e) {
     return next(new ServerError());
+  }
+};
+
+module.exports.getOffers = async (req, res, next) => {
+  try {
+    const { moderatedStatus, page, limit } = req.query;
+    const offset = (page - 1) * limit;
+    const where =
+      moderatedStatus !== 'null'
+        ? { isModerated: moderatedStatus }
+        : { isModerated: null };
+
+    const offers = await db.Offers.findAll({
+      where,
+      limit,
+      offset,
+      order: [['updatedAt', 'ASC']],
+    });
+    res.send(offers);
+  } catch (e) {
+    next(e);
+  }
+};
+
+module.exports.updateOffer = async (req, res, next) => {
+  try {
+    const { offerId, isModerated } = req.body;
+    await db.Offers.update(
+      { isModerated: isModerated, updatedAt: new Date() },
+      { where: { id: offerId } }
+    );
+    const offer = await db.Offers.findByPk(offerId);
+    const { moderatedStatus, page, limit } = req.query;
+    const offset = (page - 1) * limit;
+    const where =
+      moderatedStatus !== 'null'
+        ? { isModerated: moderatedStatus }
+        : { isModerated: null };
+
+    const offers = await db.Offers.findAll({
+      where,
+      limit,
+      offset,
+      order: [['updatedAt', 'ASC']],
+    });
+    res.send({ offer, offers });
+  } catch (e) {
+    next(e);
   }
 };
 

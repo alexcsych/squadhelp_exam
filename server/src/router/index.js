@@ -69,6 +69,10 @@ router.post(
   contestController.updateContest
 );
 
+router.get('/offers', checkToken.checkToken, contestController.getOffers);
+
+router.put('/offers', checkToken.checkToken, contestController.updateOffer);
+
 router.post(
   '/setNewOffer',
   checkToken.checkToken,
