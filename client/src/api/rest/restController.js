@@ -35,7 +35,21 @@ export const getCustomersContests = data =>
       },
     }
   );
-
+export const getOffers = (moderatedStatus, page, limit) =>
+  http.get(
+    `offers?moderatedStatus=${moderatedStatus}&&page=${page}&&limit=${limit}`
+  );
+export const updateOffer = (
+  offerId,
+  isModerated,
+  moderatedStatus,
+  page,
+  limit
+) =>
+  http.put(
+    `offers?moderatedStatus=${moderatedStatus}&&page=${page}&&limit=${limit}`,
+    { offerId, isModerated }
+  );
 export const getActiveContests = ({
   offset,
   limit,
