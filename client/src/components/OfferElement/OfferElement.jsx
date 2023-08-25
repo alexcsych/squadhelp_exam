@@ -6,12 +6,11 @@ import CONSTANTS from '../../constants';
 
 const OfferList = ({
   offer,
-  updateOffer,
   moderatedStatus,
-  notModeratedPage,
-  approvedPage,
-  rejectedPage,
+  page,
   limit,
+  offset,
+  updateOffer,
 }) => {
   const [currentOffer, setCurrentOffer] = useState(offer);
 
@@ -20,13 +19,8 @@ const OfferList = ({
       offerId,
       isModerated,
       moderatedStatus,
-      page:
-        moderatedStatus === null
-          ? notModeratedPage
-          : moderatedStatus === true
-          ? approvedPage
-          : rejectedPage,
       limit,
+      offset: (page - 1) * limit + offset - 1,
     });
   };
 

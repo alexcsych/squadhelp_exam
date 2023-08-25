@@ -7,23 +7,12 @@ import Spinner from '../Spinner/Spinner';
 import TryAgain from '../TryAgain/TryAgain';
 import OfferPagination from '../OfferPagination/OfferPagination';
 
-const tryLoadAgain = ({
-  moderatedStatus,
-  notModeratedPage,
-  approvedPage,
-  rejectedPage,
-  limit,
-}) => {
+const tryLoadAgain = ({ moderatedStatus, limit, offset }) => {
   clearOffersList();
   getOffers({
     moderatedStatus,
-    page:
-      moderatedStatus === null
-        ? notModeratedPage
-        : moderatedStatus === true
-        ? approvedPage
-        : rejectedPage,
     limit,
+    offset,
   });
 };
 
@@ -42,17 +31,19 @@ const ModeratorDashboard = ({ offers, isFetching, error, getOffers }) => {
   const [approvedPage, setApprovedPage] = useState(1);
   const [rejectedPage, setRejectedPage] = useState(1);
   const limit = 5;
+  const page =
+    moderatedStatus === null
+      ? notModeratedPage
+      : moderatedStatus === true
+      ? approvedPage
+      : rejectedPage;
+  const offset = (page - 1) * limit;
 
   useEffect(() => {
     getOffers({
       moderatedStatus,
-      page:
-        moderatedStatus === null
-          ? notModeratedPage
-          : moderatedStatus === true
-          ? approvedPage
-          : rejectedPage,
       limit,
+      offset,
     });
   }, [moderatedStatus, notModeratedPage, approvedPage, rejectedPage]);
 
@@ -74,13 +65,7 @@ const ModeratorDashboard = ({ offers, isFetching, error, getOffers }) => {
           ? setApprovedPage
           : setRejectedPage
       }
-      currentPage={
-        moderatedStatus === null
-          ? notModeratedPage
-          : moderatedStatus === true
-          ? approvedPage
-          : rejectedPage
-      }
+      currentPage={page}
       limit={limit}
       displayedOffers={moderatedOffers}
     />
@@ -110,7 +95,9 @@ const ModeratorDashboard = ({ offers, isFetching, error, getOffers }) => {
       </div>
       {error ? (
         <div className={styles.messageContainer}>
-          <TryAgain getData={() => tryLoadAgain(moderatedStatus)} />
+          <TryAgain
+            getData={() => tryLoadAgain(moderatedStatus, page, limit, offset)}
+          />
         </div>
       ) : (
         <div>
@@ -127,10 +114,9 @@ const ModeratorDashboard = ({ offers, isFetching, error, getOffers }) => {
                   key={offer.id}
                   offer={offer}
                   moderatedStatus={moderatedStatus}
-                  notModeratedPage={notModeratedPage}
-                  approvedPage={approvedPage}
-                  rejectedPage={rejectedPage}
+                  page={page}
                   limit={limit}
+                  offset={moderatedOffers.length}
                 />
               ))}
               {renderPagination()}

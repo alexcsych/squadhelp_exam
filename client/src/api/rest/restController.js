@@ -35,19 +35,19 @@ export const getCustomersContests = data =>
       },
     }
   );
-export const getOffers = (moderatedStatus, page, limit) =>
+export const getOffers = (moderatedStatus, limit, offset) =>
   http.get(
-    `offers?moderatedStatus=${moderatedStatus}&&page=${page}&&limit=${limit}`
+    `offers?moderatedStatus=${moderatedStatus}&&limit=${limit}&&offset=${offset}`
   );
 export const updateOffer = (
   offerId,
   isModerated,
   moderatedStatus,
-  page,
-  limit
+  limit,
+  offset
 ) =>
   http.put(
-    `offers?moderatedStatus=${moderatedStatus}&&page=${page}&&limit=${limit}`,
+    `offers?moderatedStatus=${moderatedStatus}&&limit=${limit}&&offset=${offset}`,
     { offerId, isModerated }
   );
 export const getActiveContests = ({

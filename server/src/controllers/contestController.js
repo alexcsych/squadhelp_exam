@@ -5,6 +5,7 @@ const userQueries = require('./queries/userQueries');
 const controller = require('../socketInit');
 const UtilFunctions = require('../utils/functions');
 const CONSTANTS = require('../constants');
+const sendEmail = require('../utils/sendEmail');
 
 module.exports.dataForContest = async (req, res, next) => {
   const response = {};
@@ -141,8 +142,7 @@ module.exports.setNewOffer = async (req, res, next) => {
 
 module.exports.getOffers = async (req, res, next) => {
   try {
-    const { moderatedStatus, page, limit } = req.query;
-    const offset = (page - 1) * limit;
+    const { moderatedStatus, limit, offset } = req.query;
     const where =
       moderatedStatus !== 'null'
         ? { isModerated: moderatedStatus }
@@ -163,25 +163,32 @@ module.exports.getOffers = async (req, res, next) => {
 module.exports.updateOffer = async (req, res, next) => {
   try {
     const { offerId, isModerated } = req.body;
+    const { moderatedStatus, limit, offset } = req.query;
     await db.Offers.update(
       { isModerated: isModerated, updatedAt: new Date() },
       { where: { id: offerId } }
     );
     const offer = await db.Offers.findByPk(offerId);
-    const { moderatedStatus, page, limit } = req.query;
-    const offset = (page - 1) * limit;
+    const user = await db.Users.findByPk(offer.userId);
+    const to = `${user.email}`;
+    const subject = 'Moderation Decision';
+    const text = `The moderator has made a decision: ${
+      isModerated === true ? 'Approved' : 'Rejected'
+    }\nYour offer: ${
+      offer.text !== null ? offer.text : offer.originalFileName
+    }`;
+    sendEmail(to, subject, text);
     const where =
       moderatedStatus !== 'null'
         ? { isModerated: moderatedStatus }
         : { isModerated: null };
-
-    const offers = await db.Offers.findAll({
+    const newOffer = await db.Offers.findAll({
       where,
       limit,
       offset,
       order: [['updatedAt', 'ASC']],
     });
-    res.send({ offer, offers });
+    res.send({ offerId: offer.id, newOffer: newOffer[0] });
   } catch (e) {
     next(e);
   }

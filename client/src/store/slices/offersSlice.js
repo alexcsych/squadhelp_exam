@@ -12,11 +12,11 @@ const initialState = {
 
 export const getOffers = decorateAsyncThunk({
   key: `${OFFERS_SLICE_NAME}/getOffers`,
-  thunk: async ({ moderatedStatus, page, limit }) => {
+  thunk: async ({ moderatedStatus, limit, offset }) => {
     const { data } = await restController.getOffers(
       moderatedStatus,
-      page,
-      limit
+      limit,
+      offset
     );
     return data;
   },
@@ -24,13 +24,13 @@ export const getOffers = decorateAsyncThunk({
 
 export const updateOffer = decorateAsyncThunk({
   key: `${OFFERS_SLICE_NAME}/updateOffer`,
-  thunk: async ({ offerId, isModerated, moderatedStatus, page, limit }) => {
+  thunk: async ({ offerId, isModerated, moderatedStatus, limit, offset }) => {
     const { data } = await restController.updateOffer(
       offerId,
       isModerated,
       moderatedStatus,
-      page,
-      limit
+      limit,
+      offset
     );
     return data;
   },
@@ -56,14 +56,14 @@ const extraReducers = builder => {
   });
   builder.addCase(updateOffer.pending, pendingReducer);
   builder.addCase(updateOffer.fulfilled, (state, { payload }) => {
-    const updatedOfferIndex = state.offers.findIndex(
-      offer => offer.id === payload.offer.id
-    );
-    if (updatedOfferIndex !== -1) {
-      state.offers[updatedOfferIndex] = payload.offer;
-    }
     state.isFetching = false;
-    state.offers = [...payload.offers];
+    const offerIndexToRemove = state.offers.findIndex(
+      offer => offer.id === payload.offerId
+    );
+    if (offerIndexToRemove !== -1) {
+      state.offers.splice(offerIndexToRemove, 1);
+    }
+    payload.newOffer && state.offers.push(payload.newOffer);
   });
   builder.addCase(updateOffer.rejected, (state, { payload }) => {
     state.isFetching = false;
