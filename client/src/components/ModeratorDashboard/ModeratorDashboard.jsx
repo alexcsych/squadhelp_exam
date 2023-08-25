@@ -6,6 +6,7 @@ import styles from './ModeratorDashboard.module.sass';
 import Spinner from '../Spinner/Spinner';
 import TryAgain from '../TryAgain/TryAgain';
 import OfferPagination from '../OfferPagination/OfferPagination';
+import StatusButton from '../StatusButton/StatusButton';
 
 const tryLoadAgain = ({ moderatedStatus, limit, offset }) => {
   clearOffersList();
@@ -15,15 +16,6 @@ const tryLoadAgain = ({ moderatedStatus, limit, offset }) => {
     offset,
   });
 };
-
-const StatusButton = ({ activeStatus, message, status, onClick }) => (
-  <button
-    className={activeStatus === status ? styles.buttonActive : null}
-    onClick={() => onClick(status)}
-  >
-    {message}
-  </button>
-);
 
 const ModeratorDashboard = ({ offers, isFetching, error, getOffers }) => {
   const [moderatedStatus, setModeratedStatus] = useState(null);
@@ -79,18 +71,21 @@ const ModeratorDashboard = ({ offers, isFetching, error, getOffers }) => {
           message='Not moderated'
           status={null}
           onClick={setModeratedStatus}
+          style={styles.buttonActive}
         />
         <StatusButton
           activeStatus={moderatedStatus}
           message='Approved'
           status={true}
           onClick={setModeratedStatus}
+          style={styles.buttonActive}
         />
         <StatusButton
           activeStatus={moderatedStatus}
           message='Rejected'
           status={false}
           onClick={setModeratedStatus}
+          style={styles.buttonActive}
         />
       </div>
       {error ? (
