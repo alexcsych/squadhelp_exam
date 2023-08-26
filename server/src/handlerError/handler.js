@@ -44,7 +44,9 @@ module.exports = async (err, req, res, next) => {
         .map(obj => JSON.stringify(obj))
         .join('\n');
       await fs.promises.writeFile(
-        `${filePath}/${modificationDate.getDate()}-${modificationDate.getMonth()}-${modificationDate.getFullYear()}.txt`,
+        `${filePath}/${modificationDate.getDate()}-${
+          modificationDate.getMonth() + 1
+        }-${modificationDate.getFullYear()}.txt`,
         updatedData
       );
       await fs.promises.writeFile(fileName, '');
