@@ -69,9 +69,19 @@ router.post(
   contestController.updateContest
 );
 
-router.get('/offers', checkToken.checkToken, contestController.getOffers);
+router.get(
+  '/offers',
+  checkToken.checkToken,
+  basicMiddlewares.onlyForModerator,
+  contestController.getOffers
+);
 
-router.put('/offers', checkToken.checkToken, contestController.updateOffer);
+router.put(
+  '/offers',
+  checkToken.checkToken,
+  basicMiddlewares.onlyForModerator,
+  contestController.updateOffer
+);
 
 router.post(
   '/setNewOffer',
