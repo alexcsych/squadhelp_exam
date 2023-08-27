@@ -61,7 +61,11 @@ export default {
       .required('Must Accept Terms and Conditions'),
   }),
   ContestSchem: yup.object({
-    nameVenture: yup.string().min(3).required('required'),
+    nameVenture: yup.string().when('contestType', {
+      is: 'name',
+      then: yup.string().min(3),
+      otherwise: yup.string().min(3).required('required'),
+    }),
     contestType: yup
       .string()
       .matches(/(name|tagline|logo)/)
