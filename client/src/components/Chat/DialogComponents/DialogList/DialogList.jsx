@@ -43,14 +43,7 @@ const DialogList = props => {
 
   const renderPreview = filterFunc => {
     const arrayList = [];
-    const {
-      userId,
-      preview,
-      goToExpandedDialog,
-      chatMode,
-      removeChat,
-      interlocutor,
-    } = props;
+    const { userId, preview, goToExpandedDialog, chatMode, removeChat } = props;
     const uniquePreviewMap = preview.reduce((acc, item) => {
       acc[item._id] = item;
       return acc;

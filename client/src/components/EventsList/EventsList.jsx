@@ -6,6 +6,7 @@ import {
 } from '../../store/slices/eventSlice';
 import styles from './EventsList.module.sass';
 import classNames from 'classnames';
+import { useCallback } from 'react';
 
 const calculateTime = time => {
   const days = Math.floor(time / (1000 * 60 * 60 * 24));
@@ -59,7 +60,7 @@ const EventsList = ({ events, remove, updateEventProgress }) => {
     setIsFilterActive(!isFilterActive);
   };
 
-  const updateProgress = () => {
+  const updateProgress = useCallback(() => {
     const updatedEvents = events.map(e => {
       const { progress, days, hours, minutes, seconds, isNotify } =
         calculateProgress(
@@ -79,7 +80,7 @@ const EventsList = ({ events, remove, updateEventProgress }) => {
       ? updatedEvents.filter(event => event.progress !== 100)
       : updatedEvents;
     updateEventProgress(filteredEvents);
-  };
+  }, [events, isFilterActive, updateEventProgress]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -87,7 +88,7 @@ const EventsList = ({ events, remove, updateEventProgress }) => {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [events]);
+  }, [updateProgress]);
 
   const eventsSorted = [...events].sort(
     (a, b) => new Date(`${a.date} ${a.time}`) - new Date(`${b.date} ${b.time}`)
