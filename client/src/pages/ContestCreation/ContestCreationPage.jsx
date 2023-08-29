@@ -17,7 +17,22 @@ const ContestCreationPage = props => {
     : { contestType: props.contestType };
 
   const handleSubmit = values => {
-    props.saveContest({ type: props.contestType, info: values });
+    const fileInfo =
+      values.file === ''
+        ? ''
+        : {
+            name: values.file.name,
+            type: values.file.type,
+            size: values.file.size,
+            lastModified: values.file.lastModified,
+          };
+
+    const updatedValues = {
+      ...values,
+      file: fileInfo,
+    };
+
+    props.saveContest({ type: props.contestType, info: updatedValues });
     const route =
       props.bundleStore.bundle[props.contestType] === 'payment'
         ? '/payment'

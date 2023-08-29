@@ -99,7 +99,12 @@ const validationSchemas = {
     typeOfName: yup.string().min(1),
     typeOfTagline: yup.string().min(1),
     brandStyle: yup.string().min(1),
-    file: yup.mixed(),
+    file: yup
+      .mixed()
+      .test('fileSize', 'File size must be less than 1.5 MB', value => {
+        if (!value) return true;
+        return value.size <= 1500000;
+      }),
   }),
   filterSchem: yup.object().shape({
     typeIndex: yup.number().oneOf[(1, 2, 3, 4, 5, 6, 7)],

@@ -16,10 +16,29 @@ const Payment = props => {
     );
     const { number, expiry, cvc } = values;
     const data = new FormData();
+
     for (let i = 0; i < contestArray.length; i++) {
-      data.append('files', contestArray[i].file);
+      if (contestArray[i].file === '') {
+        data.append('files', contestArray[i].file);
+      } else {
+        const tempFileData = localStorage.getItem(
+          `${contestArray[i].contestType}FileData`
+        );
+        const binaryData = atob(tempFileData);
+        const byteArray = new Uint8Array(binaryData.length);
+        for (let i = 0; i < binaryData.length; i++) {
+          byteArray[i] = binaryData.charCodeAt(i);
+        }
+        const file = new File([byteArray], contestArray[i].file.name, {
+          type: contestArray[i].file.type,
+        });
+        contestArray[i].file = file;
+        data.append('files', file);
+      }
+      localStorage.removeItem(`${contestArray[i].contestType}FileData`);
       contestArray[i].haveFile = !!contestArray[i].file;
     }
+
     data.append('number', number);
     data.append('expiry', expiry);
     data.append('cvc', cvc);

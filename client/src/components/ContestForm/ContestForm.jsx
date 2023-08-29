@@ -85,81 +85,109 @@ class ContestForm extends React.Component {
             innerRef={this.props.formRef}
             enableReinitialize
           >
-            <Form>
-              <div className={styles.inputContainer}>
-                <span className={styles.inputHeader}>Title of contest</span>
-                <FormInput
-                  name='title'
-                  type='text'
-                  label='Title'
+            {formikProps => (
+              <Form>
+                <div className={styles.inputContainer}>
+                  <span className={styles.inputHeader}>Title of contest</span>
+                  <FormInput
+                    name='title'
+                    type='text'
+                    label='Title'
+                    classes={{
+                      container: styles.componentInputContainer,
+                      input: styles.input,
+                      warning: styles.warning,
+                    }}
+                  />
+                </div>
+                <div className={styles.inputContainer}>
+                  <SelectInput
+                    name='industry'
+                    classes={{
+                      inputContainer: styles.selectInputContainer,
+                      inputHeader: styles.selectHeader,
+                      selectInput: styles.select,
+                      warning: styles.warning,
+                    }}
+                    header='Describe industry associated with your venture'
+                    optionsArray={this.props.dataForContest.data.industry}
+                  />
+                </div>
+                <div className={styles.inputContainer}>
+                  <span className={styles.inputHeader}>
+                    What does your company / business do?
+                  </span>
+                  <FormTextArea
+                    name='focusOfWork'
+                    type='text'
+                    label='e.g. We`re an online lifestyle brand that provides stylish and high quality apparel to the expert eco-conscious shopper'
+                    classes={{
+                      container: styles.componentInputContainer,
+                      inputStyle: styles.textArea,
+                      warning: styles.warning,
+                    }}
+                  />
+                </div>
+                <div className={styles.inputContainer}>
+                  <span className={styles.inputHeader}>
+                    Tell us about your customers
+                  </span>
+                  <FormTextArea
+                    name='targetCustomer'
+                    type='text'
+                    label='customers'
+                    classes={{
+                      container: styles.componentInputContainer,
+                      inputStyle: styles.textArea,
+                      warning: styles.warning,
+                    }}
+                  />
+                </div>
+                <OptionalSelects {...this.props} />
+                <FieldFileInput
+                  name='file'
                   classes={{
-                    container: styles.componentInputContainer,
-                    input: styles.input,
+                    fileUploadContainer: styles.fileUploadContainer,
+                    labelClass: styles.label,
+                    fileNameClass: styles.fileName,
+                    fileInput: styles.fileInput,
                     warning: styles.warning,
                   }}
-                />
-              </div>
-              <div className={styles.inputContainer}>
-                <SelectInput
-                  name='industry'
-                  classes={{
-                    inputContainer: styles.selectInputContainer,
-                    inputHeader: styles.selectHeader,
-                    selectInput: styles.select,
-                    warning: styles.warning,
-                  }}
-                  header='Describe industry associated with your venture'
-                  optionsArray={this.props.dataForContest.data.industry}
-                />
-              </div>
-              <div className={styles.inputContainer}>
-                <span className={styles.inputHeader}>
-                  What does your company / business do?
-                </span>
-                <FormTextArea
-                  name='focusOfWork'
-                  type='text'
-                  label='e.g. We`re an online lifestyle brand that provides stylish and high quality apparel to the expert eco-conscious shopper'
-                  classes={{
-                    container: styles.componentInputContainer,
-                    inputStyle: styles.textArea,
-                    warning: styles.warning,
-                  }}
-                />
-              </div>
-              <div className={styles.inputContainer}>
-                <span className={styles.inputHeader}>
-                  Tell us about your customers
-                </span>
-                <FormTextArea
-                  name='targetCustomer'
-                  type='text'
-                  label='customers'
-                  classes={{
-                    container: styles.componentInputContainer,
-                    inputStyle: styles.textArea,
-                    warning: styles.warning,
+                  fileName={
+                    this.props.initialValues.file &&
+                    this.props.initialValues.file.name
+                      ? this.props.initialValues.file.name
+                      : ''
+                  }
+                  onFileSelect={selectedFile => {
+                    const { contestType, isEditContest } = this.props;
+                    if (selectedFile !== null) {
+                      if (!isEditContest) {
+                        const reader = new FileReader();
+                        reader.readAsDataURL(selectedFile);
+                        reader.onload = event => {
+                          const base64Data = event.target.result.split(',')[1];
+                          localStorage.setItem(
+                            `${contestType}FileData`,
+                            base64Data
+                          );
+                        };
+                      }
+                    } else {
+                      localStorage.removeItem(`${contestType}FileData`);
+                      return formikProps.setFieldValue('file', '');
+                    }
+
+                    return formikProps.setFieldValue('file', selectedFile);
                   }}
                 />
-              </div>
-              <OptionalSelects {...this.props} />
-              <FieldFileInput
-                name='file'
-                classes={{
-                  fileUploadContainer: styles.fileUploadContainer,
-                  labelClass: styles.label,
-                  fileNameClass: styles.fileName,
-                  fileInput: styles.fileInput,
-                  warning: styles.warning,
-                }}
-                type='file'
-              />
-              {this.props.isEditContest ? (
-                <button type='submit' className={styles.changeData}>
-                  Set Data
-                </button>
-              ) : null}
-            </Form>
+                {this.props.isEditContest ? (
+                  <button type='submit' className={styles.changeData}>
+                    Set Data
+                  </button>
+                ) : null}
+              </Form>
+            )}
           </Formik>
         </div>
       </>

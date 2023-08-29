@@ -1,39 +1,39 @@
+import { ErrorMessage } from 'formik';
 import React from 'react';
-import { Field } from 'formik';
+import { useState } from 'react';
 
-const FieldFileInput = ({ classes, ...rest }) => {
+const FieldFileInput = ({ name, classes, fileName, onFileSelect }) => {
   const { fileUploadContainer, labelClass, fileNameClass, fileInput } = classes;
+  const [file, setFile] = useState(fileName);
+
+  const handleFileChange = e => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+      setFile(selectedFile.name);
+      onFileSelect(selectedFile);
+    } else {
+      setFile('');
+      onFileSelect(null);
+    }
+  };
 
   return (
-    <Field name={rest.name}>
-      {props => {
-        const { field } = props;
-
-        const getFileName = () => {
-          if (props.field.value) {
-            return props.field.value.name;
-          }
-          return '';
-        };
-
-        return (
-          <div className={fileUploadContainer}>
-            <label htmlFor='fileInput' className={labelClass}>
-              Choose file
-            </label>
-            <span id='fileNameContainer' className={fileNameClass}>
-              {getFileName()}
-            </span>
-            <input
-              {...field}
-              className={fileInput}
-              id='fileInput'
-              type='file'
-            />
-          </div>
-        );
-      }}
-    </Field>
+    <div className={fileUploadContainer}>
+      <label htmlFor='fileInput' className={labelClass}>
+        Choose file
+      </label>
+      <span id='fileNameContainer' className={fileNameClass}>
+        {file}
+      </span>
+      <input
+        name={name}
+        className={fileInput}
+        id='fileInput'
+        type='file'
+        onChange={handleFileChange}
+      />
+      <ErrorMessage name={name} component='span' />
+    </div>
   );
 };
 
