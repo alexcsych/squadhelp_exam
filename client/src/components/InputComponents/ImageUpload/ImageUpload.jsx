@@ -6,10 +6,13 @@ const ImageUpload = props => {
   const [imageName, setImageName] = useState('');
 
   const handleFileChange = e => {
-    e.target.files.length > 0
-      ? setImageName(e.target.files[0].name)
-      : setImageName('');
-    props.setValue(`${props.name}`, e.target.files[0]);
+    if (e.target.files.length > 0) {
+      setImageName(e.target.files[0].name);
+      props.setValue(props.name, e.target.files[0]);
+    } else {
+      setImageName('');
+      props.setValue(props.name, null);
+    }
   };
 
   return (

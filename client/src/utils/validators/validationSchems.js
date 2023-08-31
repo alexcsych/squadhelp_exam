@@ -213,7 +213,7 @@ const validationSchemas = {
     file: yup
       .mixed()
       .test('test-file', 'Support only images *.png, *.gif, *.jpeg', value => {
-        if (!value) return false;
+        if (!value) return true;
         return (
           value.type === 'image/png' ||
           value.type === 'image/jpeg' ||

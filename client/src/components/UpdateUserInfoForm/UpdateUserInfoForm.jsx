@@ -94,7 +94,7 @@ const mapStateToProps = state => {
       firstName: data.firstName,
       lastName: data.lastName,
       displayName: data.displayName,
-      file: data.avatar,
+      file: '',
     },
   };
 };
