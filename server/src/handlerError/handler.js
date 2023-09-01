@@ -28,6 +28,9 @@ module.exports = async (err, req, res, next) => {
       const fileData = existingData
         .split('\n')
         .map(line => {
+          if (line.trim() === '') {
+            return null;
+          }
           try {
             return JSON.parse(line);
           } catch (error) {
@@ -44,9 +47,9 @@ module.exports = async (err, req, res, next) => {
         .map(obj => JSON.stringify(obj))
         .join('\n');
       await fs.promises.writeFile(
-        `${filePath}/${modificationDate.getDate()}-${
+        `${filePath}/${modificationDate.getFullYear()}-${
           modificationDate.getMonth() + 1
-        }-${modificationDate.getFullYear()}.txt`,
+        }-${modificationDate.getDate()}.txt`,
         updatedData
       );
       await fs.promises.writeFile(fileName, '');
