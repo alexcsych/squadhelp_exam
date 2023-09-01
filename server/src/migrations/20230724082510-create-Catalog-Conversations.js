@@ -14,6 +14,7 @@ module.exports = {
           references: {
             model: 'Catalogs',
             key: 'id',
+            onDelete: 'CASCADE',
           },
         },
         conversationId: {
