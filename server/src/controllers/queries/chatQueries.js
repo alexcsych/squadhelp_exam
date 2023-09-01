@@ -400,14 +400,18 @@ module.exports.deleteCatalog = async (req, res, next) => {
     const catalogId = req.body.catalogId;
     const userId = req.tokenData.userId;
 
-    const catalog = await bd.Catalogs.findOne({
+    await bd.CatalogConversations.destroy({
+      where: {
+        catalogId: catalogId,
+      },
+    });
+
+    await bd.Catalogs.destroy({
       where: {
         id: catalogId,
         userId: userId,
       },
     });
-
-    await catalog.destroy();
 
     res.end();
   } catch (err) {
