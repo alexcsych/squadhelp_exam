@@ -397,17 +397,21 @@ module.exports.removeChatFromCatalog = async (req, res, next) => {
 
 module.exports.deleteCatalog = async (req, res, next) => {
   try {
-    const catalogId = req.body.query;
+    const { catalogId } = req.query;
     const userId = req.tokenData.userId;
 
-    const catalog = await bd.Catalogs.findOne({
+    await bd.CatalogConversations.destroy({
+      where: {
+        catalogId: catalogId,
+      },
+    });
+
+    await bd.Catalogs.destroy({
       where: {
         id: catalogId,
         userId: userId,
       },
     });
-
-    await catalog.destroy();
 
     res.end();
   } catch (err) {

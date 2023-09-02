@@ -27,7 +27,7 @@ export const addChatToCatalog = data => http.post('addNewChatToCatalog', data);
 export const createCatalog = data => http.post('createCatalog', data);
 export const deleteCatalog = data =>
   http.delete('deleteCatalog', {
-    params: data,
+    params: { catalogId: data.catalogId },
   });
 export const removeChatFromCatalog = data =>
   http.delete('removeChatFromCatalog', {
