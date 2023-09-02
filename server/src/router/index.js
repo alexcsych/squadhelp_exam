@@ -137,7 +137,7 @@ router.post(
   chatQueries.addNewChatToCatalog
 );
 
-router.delete(
+router.post(
   '/removeChatFromCatalog',
   checkToken.checkToken,
   chatQueries.removeChatFromCatalog

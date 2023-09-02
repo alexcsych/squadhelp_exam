@@ -30,9 +30,7 @@ export const deleteCatalog = data =>
     params: { catalogId: data.catalogId },
   });
 export const removeChatFromCatalog = data =>
-  http.delete('removeChatFromCatalog', {
-    params: data,
-  });
+  http.post('removeChatFromCatalog', data);
 export const changeCatalogName = data => http.put('updateNameCatalog', data);
 export const getCustomersContests = data =>
   http.get('getCustomersContests', {
