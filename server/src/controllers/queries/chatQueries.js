@@ -71,13 +71,14 @@ module.exports.addMessage = async (req, res, next) => {
 };
 
 module.exports.getChat = async (req, res, next) => {
-  const participants = [req.tokenData.userId, req.body.interlocutorId];
+  const { interlocutorId } = req.query;
+  const participants = [req.tokenData.userId, interlocutorId];
   participants.sort(
     (participant1, participant2) => participant1 - participant2
   );
 
   try {
-    const interlocutor = await bd.Users.findByPk(req.body.interlocutorId, {
+    const interlocutor = await bd.Users.findByPk(interlocutorId, {
       attributes: ['firstName', 'lastName', 'displayName', 'id', 'avatar'],
     });
     const conversation = await bd.Conversations.findOne({
@@ -356,7 +357,7 @@ module.exports.addNewChatToCatalog = async (req, res, next) => {
 
 module.exports.removeChatFromCatalog = async (req, res, next) => {
   try {
-    const { catalogId, chatId } = req.body;
+    const { catalogId, chatId } = req.query;
     const { userId } = req.tokenData;
 
     const catCon = await bd.CatalogConversations.findOne({
@@ -396,7 +397,7 @@ module.exports.removeChatFromCatalog = async (req, res, next) => {
 
 module.exports.deleteCatalog = async (req, res, next) => {
   try {
-    const catalogId = req.body.catalogId;
+    const catalogId = req.body.query;
     const userId = req.tokenData.userId;
 
     const catalog = await bd.Catalogs.findOne({
