@@ -54,7 +54,7 @@ const OfferForm = props => {
     resetForm();
   };
 
-  const { valid, addOfferError, clearOfferError } = props;
+  const { addOfferError, clearOfferError } = props;
   const validationSchema =
     props.contestType === CONTANTS.LOGO_CONTEST
       ? Schems.LogoOfferSchema

@@ -33,6 +33,30 @@ module.exports.checkToken = async (req, res, next) => {
   }
   try {
     req.tokenData = jwt.verify(accessToken, CONSTANTS.JWT_SECRET);
+    const foundUser = await userQueries.findUser({ id: req.tokenData.userId });
+    if (foundUser) {
+      const {
+        firstName,
+        lastName,
+        role,
+        id,
+        avatar,
+        displayName,
+        balance,
+        email,
+      } = foundUser;
+      req.tokenData = {
+        ...req.tokenData,
+        firstName,
+        lastName,
+        role,
+        id,
+        avatar,
+        displayName,
+        balance,
+        email,
+      };
+    }
     next();
   } catch (err) {
     next(new TokenError());

@@ -1,7 +1,7 @@
 import * as yup from 'yup';
 import valid from 'card-validator';
 
-export default {
+const validationSchemas = {
   LoginSchem: yup.object().shape({
     email: yup.string().email('check email').required('required'),
     password: yup
@@ -99,7 +99,12 @@ export default {
     typeOfName: yup.string().min(1),
     typeOfTagline: yup.string().min(1),
     brandStyle: yup.string().min(1),
-    file: yup.mixed(),
+    file: yup
+      .mixed()
+      .test('fileSize', 'File size must be less than 1.5 MB', value => {
+        if (!value) return true;
+        return value.size <= 1500000;
+      }),
   }),
   filterSchem: yup.object().shape({
     typeIndex: yup.number().oneOf[(1, 2, 3, 4, 5, 6, 7)],
@@ -208,7 +213,7 @@ export default {
     file: yup
       .mixed()
       .test('test-file', 'Support only images *.png, *.gif, *.jpeg', value => {
-        if (!value) return false;
+        if (!value) return true;
         return (
           value.type === 'image/png' ||
           value.type === 'image/jpeg' ||
@@ -288,3 +293,5 @@ export default {
       .required('required'),
   }),
 };
+
+export default validationSchemas;

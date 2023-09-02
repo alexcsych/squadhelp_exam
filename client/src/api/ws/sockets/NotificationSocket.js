@@ -4,10 +4,6 @@ import WebSocket from './WebSocket';
 import Notification from '../../../components/Notification/Notification';
 
 class NotificationSocket extends WebSocket {
-  constructor (dispatch, getState, room) {
-    super(dispatch, getState, room);
-  }
-
   anotherSubscribes = () => {
     this.onEntryCreated();
     this.onChangeMark();

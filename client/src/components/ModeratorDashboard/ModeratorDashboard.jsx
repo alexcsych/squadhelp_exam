@@ -37,7 +37,14 @@ const ModeratorDashboard = ({ offers, isFetching, error, getOffers }) => {
       limit,
       offset,
     });
-  }, [moderatedStatus, notModeratedPage, approvedPage, rejectedPage]);
+  }, [
+    getOffers,
+    moderatedStatus,
+    notModeratedPage,
+    approvedPage,
+    rejectedPage,
+    offset,
+  ]);
 
   const moderatedOffers = offers.filter(
     offer => offer.isModerated === moderatedStatus
