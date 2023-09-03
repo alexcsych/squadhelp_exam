@@ -11,61 +11,72 @@ if (!fs.existsSync(filePath)) {
 
 const fileName = `${filePath}/errorsLogger.txt`;
 
+let isLogging = false;
+
 const logError = async err => {
-  try {
-    let existingData;
-    let logData = [];
+  if (isLogging) {
+    return;
+  }
 
-    if (fs.existsSync(fileName)) {
-      existingData = fs.readFileSync(fileName, 'utf8');
-      if (existingData.trim() !== '') {
-        try {
-          logData = JSON.parse(existingData);
-          const stats = await fs.promises.stat(fileName);
-          const modificationDate = stats.mtime;
+  isLogging = true;
+  let existingData;
+  let logData = [];
 
-          if (
-            modificationDate.getDate() < new Date().getDate() ||
-            modificationDate.getMonth() < new Date().getMonth() ||
-            modificationDate.getFullYear() < new Date().getFullYear()
-          ) {
-            const updatedData = logData.map(obj => {
-              const { message, code, time } = obj;
-              return { message, code, time };
-            });
+  if (fs.existsSync(fileName)) {
+    try {
+      try {
+        existingData = await fs.promises.readFile(fileName, 'utf8');
+        logData = JSON.parse(existingData);
+      } catch (error) {
+        logData = [];
+      }
+      const stats = await fs.promises.stat(fileName);
+      const modificationDate = stats.mtime;
 
-            const allLogs = JSON.stringify(updatedData);
-            await fs.promises.writeFile(
-              `${filePath}/${modificationDate.getFullYear()}-${
-                modificationDate.getMonth() + 1
-              }-${modificationDate.getDate()}.txt`,
-              allLogs
-            );
-            logData = [];
-          }
+      if (
+        modificationDate.getDate() < new Date().getDate() ||
+        modificationDate.getMonth() < new Date().getMonth() ||
+        modificationDate.getFullYear() < new Date().getFullYear()
+      ) {
+        const updatedData = logData.map(obj => {
+          const { message, code, time } = obj;
+          return { message, code, time };
+        });
 
-          const stackframes = await stacktrace.fromError(err);
-          const stackTrace = stackframes.map(sf => sf.toString()).join(' ');
-
-          const log = {
-            message: err.message || 'Server Error',
-            time: new Date().getTime(),
-            code: err.code || 500,
-            stackTrace: stackTrace,
-          };
-
-          logData.push(log);
-          const allLogs = JSON.stringify(logData);
-          fs.promises.writeFile(fileName, allLogs).catch(error => {
+        const allLogs = JSON.stringify(updatedData);
+        await fs.promises
+          .writeFile(
+            `${filePath}/${modificationDate.getFullYear()}-${
+              modificationDate.getMonth() + 1
+            }-${modificationDate.getDate()}.txt`,
+            allLogs
+          )
+          .catch(error => {
             console.error('Error writing file:', error);
           });
-        } catch (error) {
-          console.error('Error:', error);
-        }
+        logData = [];
       }
+
+      const stackframes = await stacktrace.fromError(err);
+      const stackTrace = stackframes.map(sf => sf.toString()).join(' ');
+
+      const log = {
+        message: err.message || 'Server Error',
+        time: new Date().getTime(),
+        code: err.code || 500,
+        stackTrace: stackTrace,
+      };
+
+      logData.push(log);
+      const allLogs = JSON.stringify(logData);
+      await fs.promises.writeFile(fileName, allLogs).catch(error => {
+        console.error('Error writing file:', error);
+      });
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      isLogging = false;
     }
-  } catch (error) {
-    console.error('Error:', error);
   }
 };
 
