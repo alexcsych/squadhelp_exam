@@ -357,7 +357,7 @@ module.exports.addNewChatToCatalog = async (req, res, next) => {
 
 module.exports.removeChatFromCatalog = async (req, res, next) => {
   try {
-    const { catalogId, chatId } = req.query;
+    const { catalogId, chatId } = req.body;
     const { userId } = req.tokenData;
 
     const catCon = await bd.CatalogConversations.findOne({
@@ -397,7 +397,7 @@ module.exports.removeChatFromCatalog = async (req, res, next) => {
 
 module.exports.deleteCatalog = async (req, res, next) => {
   try {
-    const catalogId = req.body.query;
+    const { catalogId } = req.query;
     const userId = req.tokenData.userId;
 
     await bd.CatalogConversations.destroy({

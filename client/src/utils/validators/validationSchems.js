@@ -160,6 +160,24 @@ const validationSchemas = {
         value => valid.expirationDate(value).isValid
       )
       .required('required'),
+    sum: yup
+      .number()
+      .moreThan(0, 'The amount must be greater than 0')
+      .test(
+        'max-balance',
+        'The amount must not exceed the balance',
+        function (value) {
+          const { balanceGreaterThanZero, balance } = this.parent;
+          return (
+            !balanceGreaterThanZero ||
+            (balanceGreaterThanZero && value <= balance)
+          );
+        }
+      )
+      .when('balanceGreaterThanZero', {
+        is: true,
+        then: yup.number().required('required'),
+      }),
   }),
   CashoutSchema: yup.object().shape({
     sum: yup.number().min(5, 'min sum is 5$').required('required'),
