@@ -28,6 +28,9 @@ const PayForm = props => {
           number: '',
           cvc: '',
           expiry: '',
+          balance: props.userStore.data.balance,
+          balanceGreaterThanZero: props.userStore.data.balance > 0,
+          sum: '',
         }}
         onSubmit={pay}
         validationSchema={Schems.PaymentSchema}
@@ -155,8 +158,13 @@ const PayForm = props => {
   );
 };
 
+const mapStateToProps = state => {
+  const { userStore } = state;
+  return { userStore };
+};
+
 const mapDispatchToProps = dispatch => ({
   changeFocusOnCard: data => dispatch(changeFocusOnCard(data)),
 });
 
-export default connect(null, mapDispatchToProps)(PayForm);
+export default connect(mapStateToProps, mapDispatchToProps)(PayForm);
