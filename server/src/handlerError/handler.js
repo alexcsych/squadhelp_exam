@@ -2,6 +2,7 @@ const fs = require('fs');
 const stacktrace = require('stacktrace-js');
 const path = require('path');
 const filePath = path.resolve(__dirname, '..', '..', 'public/errorsLogger');
+const fileName = `${filePath}/errorsLogger.txt`;
 
 if (!fs.existsSync(filePath)) {
   fs.mkdirSync(filePath, {
@@ -9,7 +10,9 @@ if (!fs.existsSync(filePath)) {
   });
 }
 
-const fileName = `${filePath}/errorsLogger.txt`;
+if (!fs.existsSync(fileName)) {
+  fs.writeFileSync(fileName, '', 'utf-8');
+}
 
 let isLogging = false;
 
