@@ -13,6 +13,10 @@ const Error = props => {
         return data;
       case 403:
         return 'Bank decline transaction';
+      case 417:
+        return 'Not enough money';
+      case 408:
+        return 'Token error';
       case 406:
         return data;
       default:
