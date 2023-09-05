@@ -8,6 +8,7 @@ const controller = require('../socketInit');
 const userQueries = require('./queries/userQueries');
 const bankQueries = require('./queries/bankQueries');
 const ratingQueries = require('./queries/ratingQueries');
+const NotEnoughMoney = require('../errors/NotEnoughMoney');
 
 module.exports.login = async (req, res, next) => {
   try {
@@ -167,7 +168,11 @@ module.exports.payment = async (req, res, next) => {
     res.send();
   } catch (err) {
     transaction.rollback();
-    next(err);
+    if (err.original.constraint === 'Banks_balance_ck') {
+      next(new NotEnoughMoney('Not enough money'));
+    } else {
+      next(err);
+    }
   }
 };
 
