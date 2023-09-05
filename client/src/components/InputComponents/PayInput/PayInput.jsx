@@ -18,9 +18,7 @@ const PayInput = props => {
             [classes.notValid]: touched && error,
           })}
         />
-        {touched && error && (
-          <span className={classes.error}>{error.message}!</span>
-        )}
+        {touched && error && <span className={classes.error}>{error}!</span>}
       </div>
     );
   }
@@ -37,9 +35,7 @@ const PayInput = props => {
           })}
           onFocus={() => changeFocus(field.name)}
         />
-        {touched && error && (
-          <span className={classes.error}>{error.message}!</span>
-        )}
+        {touched && error && <span className={classes.error}>{error}!</span>}
       </div>
     );
   }
@@ -53,9 +49,7 @@ const PayInput = props => {
         })}
         onFocus={() => changeFocus(field.name)}
       />
-      {touched && error && (
-        <span className={classes.error}>{error.message}!</span>
-      )}
+      {touched && error && <span className={classes.error}>{error}!</span>}
     </div>
   );
 };
