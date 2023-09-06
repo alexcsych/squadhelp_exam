@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import className from 'classnames';
 import {
+  switchFetchData,
   getDialogMessages,
   clearMessageList,
 } from '../../../../store/slices/chatSlice';
@@ -23,8 +24,15 @@ class Dialog extends React.Component {
   };
 
   componentWillReceiveProps (nextProps, nextContext) {
-    if (nextProps.interlocutor.id !== this.props.interlocutor.id)
-      this.props.getDialog({ interlocutorId: nextProps.interlocutor.id });
+    if (
+      nextProps.interlocutor.id !== this.props.interlocutor.id ||
+      nextProps.shouldFetchData
+    ) {
+      this.props.switchFetchData();
+      this.props.getDialog({
+        interlocutorId: nextProps.interlocutor.id,
+      });
+    }
   }
 
   componentWillUnmount () {
@@ -102,6 +110,7 @@ class Dialog extends React.Component {
 const mapStateToProps = state => state.chatStore;
 
 const mapDispatchToProps = dispatch => ({
+  switchFetchData: () => dispatch(switchFetchData()),
   getDialog: data => dispatch(getDialogMessages(data)),
   clearMessageList: () => dispatch(clearMessageList()),
 });

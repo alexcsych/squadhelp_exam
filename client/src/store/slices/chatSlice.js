@@ -27,6 +27,7 @@ const initialState = {
   isRenameCatalog: false,
   isShowChatsInCatalog: false,
   catalogCreationMode: CONSTANTS.ADD_CHAT_TO_OLD_CATALOG,
+  shouldFetchData: false,
 };
 
 //---------- getPreviewChat
@@ -349,6 +350,11 @@ const reducers = {
     state.isShow = true;
     state.isExpanded = true;
     state.messages = [];
+    state.shouldFetchData = true;
+  },
+
+  switchFetchData: state => {
+    state.shouldFetchData = false;
   },
 
   clearMessageList: state => {
@@ -416,6 +422,7 @@ export const {
   addMessage,
   backToDialogList,
   goToExpandedDialog,
+  switchFetchData,
   clearMessageList,
   changeChatShow,
   setPreviewChatMode,
