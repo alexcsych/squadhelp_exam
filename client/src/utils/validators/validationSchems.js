@@ -103,7 +103,7 @@ const validationSchemas = {
       .mixed()
       .test('fileSize', 'File size must be less than 1.5 MB', value => {
         if (!value) return true;
-        return value.size <= 1500000;
+        return value.size ? value.size <= 1500000 : true;
       }),
   }),
   filterSchem: yup.object().shape({
