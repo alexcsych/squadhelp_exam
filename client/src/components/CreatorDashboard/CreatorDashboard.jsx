@@ -103,6 +103,10 @@ class CreatorDashboard extends React.Component {
       this.getContests(this.props.creatorFilter);
   }
 
+  componentWillUnmount () {
+    this.props.clearContestsList();
+  }
+
   getContests = filter => {
     this.props.getContests({
       limit: 8,
