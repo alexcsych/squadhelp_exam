@@ -26,7 +26,6 @@ services:
     depends_on:
       - db-dev
       - mongo-dev
-    command: sh -c "sleep 10 && npm start"
     volumes:
       - ./var/www/html/images:/var/www/html/images
       - ./server:/server
