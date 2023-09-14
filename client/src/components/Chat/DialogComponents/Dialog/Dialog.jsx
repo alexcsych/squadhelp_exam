@@ -47,6 +47,9 @@ class Dialog extends React.Component {
     const messagesArray = [];
     const { messages, userId } = this.props;
     let currentTime = moment();
+    if (this.props.chatData === null) {
+      return <div className={styles.messageList}></div>;
+    }
     const dialogMessages = messages.filter(message =>
       this.props.chatData.participants.includes(message.sender)
     );

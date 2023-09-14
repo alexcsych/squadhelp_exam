@@ -1,4 +1,3 @@
-const { Catalog, Conversation, Message } = require('../../models/mongoModels');
 const bd = require('../../models');
 const controller = require('../../socketInit');
 const { Op } = require('sequelize');
