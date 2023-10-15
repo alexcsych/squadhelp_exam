@@ -16,6 +16,7 @@ const eventSlice = createSlice({
         seconds: 0,
         id: uuidv4(),
         isNotify: true,
+        isFinished: false,
       });
     },
     deleteEvent (state, action) {

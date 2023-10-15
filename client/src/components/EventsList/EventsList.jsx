@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
 import {
   deleteEvent,
@@ -25,6 +26,7 @@ const calculateProgress = (
   eventMinutesNotify,
   eventSecondsNotify,
   isNotify,
+  isFinished,
   name
 ) => {
   const currentTime = new Date();
@@ -44,13 +46,21 @@ const calculateProgress = (
       timeDifference
   ) {
     isNotify = false;
-    alert(`Don\`t forget about '${name}' event`);
+    toast(`Don\`t forget about '${name}' event`);
   }
 
   if (timeDifference < 0) {
-    return { progress: 100, days, hours, minutes, seconds, isNotify };
+    return {
+      progress: 100,
+      days,
+      hours,
+      minutes,
+      seconds,
+      isNotify,
+      isFinished,
+    };
   }
-  return { progress, days, hours, minutes, seconds, isNotify };
+  return { progress, days, hours, minutes, seconds, isNotify, isFinished };
 };
 
 const EventsList = ({ events, remove, updateEventProgress }) => {
@@ -62,7 +72,7 @@ const EventsList = ({ events, remove, updateEventProgress }) => {
 
   const updateProgress = useCallback(() => {
     const updatedEvents = events.map(e => {
-      const { progress, days, hours, minutes, seconds, isNotify } =
+      const { progress, days, hours, minutes, seconds, isNotify, isFinished } =
         calculateProgress(
           e.createdAt,
           e.date,
@@ -72,13 +82,46 @@ const EventsList = ({ events, remove, updateEventProgress }) => {
           e.minutesNotify,
           e.secondsNotify,
           e.isNotify,
+          e.isFinished,
           e.name
         );
-      return { ...e, progress, days, hours, minutes, seconds, isNotify };
+      return {
+        ...e,
+        progress,
+        days,
+        hours,
+        minutes,
+        seconds,
+        isNotify,
+        isFinished,
+      };
     });
+
+    const finishedProgressEvents = updatedEvents.filter(
+      e => e.progress === 100
+    );
+    const newFinishedEvents = updatedEvents.filter(
+      e => e.progress === 100 && !e.isFinished
+    );
+
+    if (finishedProgressEvents.length > 0 && newFinishedEvents.length > 0) {
+      toast(`All finished events: ${finishedProgressEvents.length}`, {
+        className: styles.redToast,
+      });
+    }
+
+    const finishedEvents = updatedEvents.map(e => {
+      if (newFinishedEvents.some(newEvent => newEvent.id === e.id)) {
+        return { ...e, isFinished: true };
+      } else {
+        return e;
+      }
+    });
+
     const filteredEvents = isFilterActive
-      ? updatedEvents.filter(event => event.progress !== 100)
-      : updatedEvents;
+      ? finishedEvents.filter(event => event.progress !== 100)
+      : finishedEvents;
+
     updateEventProgress(filteredEvents);
   }, [events, isFilterActive, updateEventProgress]);
 
