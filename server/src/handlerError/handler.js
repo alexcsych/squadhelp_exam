@@ -1,5 +1,6 @@
 const fs = require('fs');
-const stacktrace = require('stacktrace-js');
+const cron = require('node-cron');
+const stackTrace = require('stack-trace');
 const path = require('path');
 const filePath = path.resolve(__dirname, '..', '..', 'public/errorsLogger');
 const fileName = `${filePath}/errorsLogger.txt`;
@@ -14,74 +15,74 @@ if (!fs.existsSync(fileName)) {
   fs.writeFileSync(fileName, '', 'utf-8');
 }
 
-let isLogging = false;
+async function logErrorToFile (error, filename) {
+  const trace = stackTrace.parse(error);
 
-const logError = async err => {
-  if (isLogging) {
-    return;
-  }
+  const logEntry = {
+    message: error.message,
+    time: Date.now(),
+    code: error.code || 500,
+    stackTrace: trace,
+  };
 
-  isLogging = true;
-  let existingData;
-  let logData = [];
-
-  if (fs.existsSync(fileName)) {
-    try {
-      try {
-        existingData = await fs.promises.readFile(fileName, 'utf8');
-        logData = JSON.parse(existingData);
-      } catch (error) {
-        logData = [];
-      }
-      const stats = await fs.promises.stat(fileName);
-      const modificationDate = stats.mtime;
-
-      if (
-        modificationDate.getDate() < new Date().getDate() ||
-        modificationDate.getMonth() < new Date().getMonth() ||
-        modificationDate.getFullYear() < new Date().getFullYear()
-      ) {
-        const updatedData = logData.map(obj => {
-          const { message, code, time } = obj;
-          return { message, code, time };
-        });
-
-        const allLogs = JSON.stringify(updatedData);
-        await fs.promises
-          .writeFile(
-            `${filePath}/${modificationDate.getFullYear()}-${
-              modificationDate.getMonth() + 1
-            }-${modificationDate.getDate()}.txt`,
-            allLogs
-          )
-          .catch(error => {
-            console.error('Error writing file:', error);
-          });
-        logData = [];
-      }
-
-      const stackframes = await stacktrace.fromError(err);
-      const stackTrace = stackframes.map(sf => sf.toString()).join(' ');
-
-      const log = {
-        message: err.message || 'Server Error',
-        time: new Date().getTime(),
-        code: err.code || 500,
-        stackTrace: stackTrace,
-      };
-
-      logData.push(log);
-      const allLogs = JSON.stringify(logData);
-      await fs.promises.writeFile(fileName, allLogs).catch(error => {
-        console.error('Error writing file:', error);
-      });
-    } catch (error) {
-      console.error('Error:', error);
-    } finally {
-      isLogging = false;
+  fs.appendFile(filename, JSON.stringify(logEntry, null, 2) + '\n\n', err => {
+    if (err) {
+      console.error('Ошибка записи в файл:', err);
     }
-  }
-};
+  });
+}
+
+function copyAndTransformLogFile (srcFile, destFile) {
+  fs.readFile(srcFile, 'utf8', (err, data) => {
+    if (err) {
+      console.error('Ошибка при чтении файла:', err);
+      return;
+    }
+
+    const logEntries = data
+      .trim()
+      .split('\n\n')
+      .map(line => {
+        try {
+          return JSON.parse(line);
+        } catch (e) {
+          console.error('Ошибка при парсинге строки:', e);
+          return null;
+        }
+      })
+      .filter(entry => entry !== null);
+
+    const transformedEntries = logEntries.map(entry => ({
+      message: entry.message,
+      code: entry.code,
+      time: entry.time,
+    }));
+
+    fs.writeFile(destFile, JSON.stringify(transformedEntries, null, 2), err => {
+      if (err) {
+        console.error('Ошибка при записи файла:', err);
+      } else {
+        fs.writeFile(srcFile, '', err => {
+          if (err) {
+            console.error('Ошибка при очистке файла:', err);
+          }
+        });
+      }
+    });
+  });
+}
+
+cron.schedule('05 19 * * *', () => {
+  const currentDate = new Date();
+  const dayFileName = `${filePath}/errorLogs_${currentDate
+    .toISOString()
+    .slice(0, 10)}.txt`;
+
+  copyAndTransformLogFile(fileName, dayFileName);
+  console.log(
+    `Содержимое файла ${fileName} скопировано и преобразовано в ${dayFileName} и очищено.`
+  );
+});
 
 module.exports = async (err, req, res, next) => {
   if (
@@ -98,6 +99,5 @@ module.exports = async (err, req, res, next) => {
   } else {
     res.status(err.code).send(err.message);
   }
-
-  await logError(err);
+  await logErrorToFile(err, fileName);
 };
