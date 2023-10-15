@@ -218,7 +218,7 @@ div .navbar-nav-icon-menu {
   transition: all 0.2s ease-in-out;
 }
 
-.start-contest-btn,
+.start-contest > .start-contest-btn,
 .start-contest-btn:visited {
   display: none;
   padding: 0.5rem;
@@ -430,7 +430,7 @@ div .navbar-nav-icon-menu {
   padding-left: 15px;
 }
 
-.section-a-rh > img {
+.section-a-rh img {
   display: none;
   max-width: 100%;
   height: auto;
@@ -550,7 +550,7 @@ div .navbar-nav-icon-menu {
   padding-left: 15px;
 }
 
-.section-c-pb-b > img {
+.section-c-pb-b img {
   max-width: 100%;
   width: 100%;
   height: auto;
@@ -1211,7 +1211,7 @@ footer {
   .section-a-rh {
     max-width: 41.66667%;
   }
-  .section-a-rh > img {
+  .section-a-rh img {
     display: block;
   }
   .section-c-pa {

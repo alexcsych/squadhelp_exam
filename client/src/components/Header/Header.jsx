@@ -174,7 +174,13 @@ class Header extends React.Component {
                   />
                   <ul>
                     <li>
-                      <a href='http://www.google.com'>HOW IT WORKS</a>
+                      <a
+                        href='https://server-application-development.000webhostapp.com/HowItWorks/'
+                        target='_blank'
+                        rel='noreferrer'
+                      >
+                        HOW IT WORKS
+                      </a>
                     </li>
                     <li>
                       <a href='http://www.google.com'>PRICING</a>

@@ -72,7 +72,7 @@
                   <i class="fas fa-bars"></i>
                 </button>
               </div>
-              <div>
+              <div class="start-contest">
                 <a href="#" class="btn start-contest-btn">Start Contest</a>
               </div>
             </div>
@@ -233,7 +233,13 @@
             </div>
           </article>
           <article class="section-a-rh">
-            <img src="./img/image1.png" alt="user-in-phone" />
+            <picture>
+              <source
+                srcset="./img/image1-big.png"
+                media="(max-width: 1200px)"
+              />
+              <img src="./img/image1-small.png" alt="user-in-phone" />
+            </picture>
           </article>
         </div>
       </section>
@@ -331,7 +337,14 @@
             </ul>
           </div>
           <div class="section-c-pb-b">
-            <img src="./img/image6.png" alt="user working" />
+            <picture>
+              <source
+                srcset="./img/image6-small.png"
+                media="(max-width:425px)"
+              />
+              <source srcset="./img/image6-big.png" media="(max-width:990px)" />
+              <img src="./img/image6.png" alt="user working" />
+            </picture>
           </div>
         </article>
       </section>
