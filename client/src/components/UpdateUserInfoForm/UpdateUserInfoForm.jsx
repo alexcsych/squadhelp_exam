@@ -74,6 +74,7 @@ const UpdateUserInfoForm = props => {
               uploadContainer: styles.imageUploadContainer,
               inputContainer: styles.uploadInputContainer,
               imgName: styles.imgName,
+              imgStyle: styles.imgStyle,
               error: styles.error,
             }}
           />
